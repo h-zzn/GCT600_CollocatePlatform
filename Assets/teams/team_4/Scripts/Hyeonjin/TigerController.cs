@@ -1,4 +1,5 @@
 using UnityEngine;
+using Meta.XR.MRUtilityKit;
 
 public class TigerController : MonoBehaviour
 {        
@@ -7,7 +8,7 @@ public class TigerController : MonoBehaviour
     [SerializeField] private float fadeDuration = 2f;
 
     [Header("Movement Settings")]
-    [SerializeField] private Transform targetPoint;   // 인스펙터에서 Empty 오브젝트 지정
+    [SerializeField] private Transform targetPoint;
     [SerializeField] private float moveSpeed = 1.5f;  // 호랑이 이동 속도 (m/s)
     [SerializeField] private float stopDistance = 0.3f; // 도착 판정 거리
 
@@ -43,6 +44,14 @@ public class TigerController : MonoBehaviour
         {
             BaekjaHandler.Instance.OnBaekjaCreated += OnFusedBaekjaCreated;
         }
+
+        if (MRUKManager.Instance != null)
+        {
+            if (MRUKManager.Instance.IsReady)
+                AssignTableAnchor(MRUKManager.Instance.CurrentRoom);
+            else
+                MRUKManager.Instance.OnRoomReady += AssignTableAnchor;
+        }
     }
 
     private void OnDestroy()
@@ -53,6 +62,27 @@ public class TigerController : MonoBehaviour
             BaekjaHandler.Instance.OnBaekjaCreated -= OnFusedBaekjaCreated;
         }
     }
+
+    private void AssignTableAnchor(MRUKRoom room)
+{
+    if (room == null)
+    {
+        Debug.LogWarning("[TigerController] MRUK room is null");
+        return;
+    }
+
+    foreach (var anchor in room.Anchors)
+    {
+        if (anchor.Label == MRUKAnchor.SceneLabels.TABLE)
+        {
+            targetPoint = anchor.transform;
+            Debug.Log($"[TigerController] TABLE Anchor assigned as target → {anchor.name}");
+            return;
+        }
+    }
+
+    Debug.LogWarning("[TigerController] No TABLE Anchor found in room!");
+}
 
     // fusedBaekja가 생성되면 참조 저장
     private void OnFusedBaekjaCreated(GameObject fusedBaekja)
