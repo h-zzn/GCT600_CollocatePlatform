@@ -19113,7 +19113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 0}
   moveSpeed: 1.5
-  stopDistance: 0.3
+  stopDistance: 3
 --- !u!1 &1780155861
 GameObject:
   m_ObjectHideFlags: 0

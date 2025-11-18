@@ -55,8 +55,17 @@ public class TigerMover : MonoBehaviour
     private void Update()
     {
         if (targetPoint == null) return;
+        
+        if (!IsInWalkState()) return;
 
         MoveToTarget();
+    }
+
+    private bool IsInWalkState()
+    {
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+
+        return info.IsName("Walk");  
     }
 
     private void MoveToTarget()
@@ -65,20 +74,18 @@ public class TigerMover : MonoBehaviour
         dir.y = 0;
         float dist = dir.magnitude;
 
-        // 이동 중 애니메이션 트리거
-        animator.SetBool("isWalking", dist > stopDistance);
-
         if (dist > stopDistance)
         {
-            // 바라보기
+            // 회전
             Quaternion rot = Quaternion.LookRotation(dir.normalized);
             transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 5f);
 
-            // 실제 이동
+            // 이동
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
         }
         else
         {
+            // 도착 → Walk 끄기
             animator.SetBool("isWalking", false);
         }
     }
