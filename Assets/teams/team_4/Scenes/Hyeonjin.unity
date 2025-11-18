@@ -536,9 +536,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0581edadd88fca64b9f3b42eb316f84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baekjaAPrefab: {fileID: 5147515432007129474, guid: c10e26c97b8354845b1cc0616824b37f, type: 3}
-  baekjaBPrefab: {fileID: 4727149496619300288, guid: 408079953419a9c4385a823fb695ab2d, type: 3}
-  spacing: 0.3
   fusedBaekjaPrefab: {fileID: 9168259436360822395, guid: b13e83903bc7f104793a6eb16b5acb6f, type: 3}
   spawnYThreshold: 0
   fadeDuration: 2
@@ -8615,7 +8612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: PrefabsToSpawn.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: PrefabsToSpawn.Array.data[0].Labels
@@ -8623,7 +8620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: PrefabsToSpawn.Array.data[1].Labels
-      value: 4
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: PrefabsToSpawn.Array.data[0].Prefabs.Array.size
@@ -8636,7 +8633,7 @@ PrefabInstance:
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: 'PrefabsToSpawn.Array.data[1].Prefabs.Array.data[0]'
       value: 
-      objectReference: {fileID: 1905792406251565792, guid: 93b8ffa8f81a6c140a5407d610d85747, type: 3}
+      objectReference: {fileID: 5147515432007129474, guid: c10e26c97b8354845b1cc0616824b37f, type: 3}
     - target: {fileID: 91450107390678966, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10830,6 +10827,10 @@ PrefabInstance:
       propertyPath: SceneSettings.RoomPrefabs.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: 'SceneSettings.RoomPrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 7687710980979772549, guid: faee1de3e12c0e74ab4b35431d4b9f4a, type: 3}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: 'SceneSettings.RoomPrefabs.Array.data[3]'
       value: 

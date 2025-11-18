@@ -8,10 +8,10 @@ public class BaekjaHandler : MonoBehaviour
     public static BaekjaHandler Instance;
     public event Action<GameObject> OnBaekjaCreated;
 
-    [Header("Initial Baekja Settings")]
-    [SerializeField] private GameObject baekjaAPrefab;
-    [SerializeField] private GameObject baekjaBPrefab;
-    [SerializeField] private float spacing = 0.25f;    // 두 백자 간 간격
+    // [Header("Initial Baekja Settings")]
+    // [SerializeField] private GameObject baekjaAPrefab;
+    // [SerializeField] private GameObject baekjaBPrefab;
+    // [SerializeField] private float spacing = 0.25f;    // 두 백자 간 간격
 
     [Header("Fused Baekja Settings")]
     [SerializeField] private GameObject fusedBaekjaPrefab;
@@ -63,76 +63,76 @@ public class BaekjaHandler : MonoBehaviour
             Debug.LogWarning("[BaekjaHandler] TABLE anchor not found in current MRUK room.");
         }
 
-        StartCoroutine(WaitAndSpawnInitialBaekjas());
+        //StartCoroutine(WaitAndSpawnInitialBaekjas());
     }
 
-    IEnumerator WaitAndSpawnInitialBaekjas()
-    {
-        // 최소 2프레임 기다리기
-        yield return null;
-        yield return null;
+    // IEnumerator WaitAndSpawnInitialBaekjas()
+    // {
+    //     // 최소 2프레임 기다리기
+    //     yield return null;
+    //     yield return null;
 
-        // Renderer나 Collider 로드될 때까지 최대 1초(60프레임) 대기
-        Renderer rend = null;
-        Collider col = null;
-        int frameCount = 0;
-        while (rend == null && col == null && frameCount < 60)
-        {
-            rend = spawnPoint.GetComponentInChildren<Renderer>(true);
-            col = spawnPoint.GetComponentInChildren<Collider>(true);
-            frameCount++;
-            yield return null;
-        }
+    //     // Renderer나 Collider 로드될 때까지 최대 1초(60프레임) 대기
+    //     Renderer rend = null;
+    //     Collider col = null;
+    //     int frameCount = 0;
+    //     while (rend == null && col == null && frameCount < 60)
+    //     {
+    //         rend = spawnPoint.GetComponentInChildren<Renderer>(true);
+    //         col = spawnPoint.GetComponentInChildren<Collider>(true);
+    //         frameCount++;
+    //         yield return null;
+    //     }
 
-        if (rend == null && col == null)
-        {
-            Debug.LogWarning("[BaekjaHandler] TABLE prefab still has no Renderer or Collider after waiting.");
-            yield break;
-        }
+    //     if (rend == null && col == null)
+    //     {
+    //         Debug.LogWarning("[BaekjaHandler] TABLE prefab still has no Renderer or Collider after waiting.");
+    //         yield break;
+    //     }
 
-        Debug.Log($"[BaekjaHandler] TABLE mesh ready after {frameCount} frames.");
-        SpawnInitialBaekjas();
-    }
+    //     Debug.Log($"[BaekjaHandler] TABLE mesh ready after {frameCount} frames.");
+    //     // SpawnInitialBaekjas();
+    // }
 
     
-    private void SpawnInitialBaekjas()
-    {
-        if (spawnPoint == null)
-        {
-            Debug.LogWarning("[BaekjaHandler] TABLE anchor not found.");
-            return;
-        }
+    // private void SpawnInitialBaekjas()
+    // {
+    //     if (spawnPoint == null)
+    //     {
+    //         Debug.LogWarning("[BaekjaHandler] TABLE anchor not found.");
+    //         return;
+    //     }
 
-        Renderer rend = spawnPoint.GetComponentInChildren<Renderer>();
-        if (rend == null)
-        {
-            Debug.LogWarning("[BaekjaHandler] TABLE has no Renderer.");
-            return;
-        }
+    //     Renderer rend = spawnPoint.GetComponentInChildren<Renderer>();
+    //     if (rend == null)
+    //     {
+    //         Debug.LogWarning("[BaekjaHandler] TABLE has no Renderer.");
+    //         return;
+    //     }
 
-        // 테이블 표면과 중심 계산
-        Bounds bounds = rend.bounds;
-        float topY = bounds.center.y + bounds.extents.y;
-        Vector3 center = bounds.center;
-        Vector3 right = spawnPoint.transform.right.normalized;
+    //     // 테이블 표면과 중심 계산
+    //     Bounds bounds = rend.bounds;
+    //     float topY = bounds.center.y + bounds.extents.y;
+    //     Vector3 center = bounds.center;
+    //     Vector3 right = spawnPoint.transform.right.normalized;
 
-        // 중앙 기준 좌우로 배치
-        Vector3 posA = center - right * (spacing * 0.5f);
-        Vector3 posB = center + right * (spacing * 0.5f);
-        posA.y = posB.y = topY + spawnYThreshold;
+    //     // 중앙 기준 좌우로 배치
+    //     Vector3 posA = center - right * (spacing * 0.5f);
+    //     Vector3 posB = center + right * (spacing * 0.5f);
+    //     posA.y = posB.y = topY + spawnYThreshold;
 
-        // 인스펙터에서 지정된 프리팹으로 스폰
-        if (baekjaAPrefab == null || baekjaBPrefab == null)
-        {
-            Debug.LogError("[BaekjaHandler] Please assign both Baekja prefabs in the Inspector!");
-            return;
-        }
+    //     // 인스펙터에서 지정된 프리팹으로 스폰
+    //     if (baekjaAPrefab == null || baekjaBPrefab == null)
+    //     {
+    //         Debug.LogError("[BaekjaHandler] Please assign both Baekja prefabs in the Inspector!");
+    //         return;
+    //     }
 
-        GameObject baekjaA = Instantiate(baekjaAPrefab, posA, Quaternion.identity);
-        GameObject baekjaB = Instantiate(baekjaBPrefab, posB, Quaternion.identity);
+    //     GameObject baekjaA = Instantiate(baekjaAPrefab, posA, Quaternion.identity);
+    //     GameObject baekjaB = Instantiate(baekjaBPrefab, posB, Quaternion.identity);
 
-        Debug.Log($"[BaekjaHandler] Spawned Baekja A at {posA}, Baekja B at {posB}");
-    }
+    //     Debug.Log($"[BaekjaHandler] Spawned Baekja A at {posA}, Baekja B at {posB}");
+    // }
 
     public void SpawnFusedBaekja(GameObject baekja1, GameObject baekja2, GameObject perfectBaekja)
     {
