@@ -19,7 +19,7 @@ public class BaekjaHandler : MonoBehaviour
     
     //[SerializeField] private float spawnYThreshold = 1.5f;
     [SerializeField] private float fadeDuration = 2f;    // 페이드 인/아웃 지속 시간
-    private GameObject tablePosition;
+    [SerializeField] private GameObject tableObject;
 
     private void Awake()
     {
@@ -27,23 +27,21 @@ public class BaekjaHandler : MonoBehaviour
     }
     private void Start()
     {
-        if (MRUKManager.Instance == null)
-        {
-            Debug.LogError("[BaekjaHandler] MRUKManager instance not found.");
-            return;
-        }
+        StartCoroutine(WaitForTableAnchor());
+    }
 
-        if (MRUKManager.Instance.IsReady)
-        {
-            tablePosition = MRUKManager.Instance.TableAnchor?.gameObject;
-        }
-        else
-        {
-            MRUKManager.Instance.OnAnchorsReady += () =>
-            {
-                tablePosition = MRUKManager.Instance.TableAnchor?.gameObject;
-            };
-        }
+    private IEnumerator WaitForTableAnchor()
+    {
+        // MRUKManager 준비될 때까지 대기
+        while (MRUKManager.Instance == null || !MRUKManager.Instance.IsReady)
+            yield return null;
+
+        // TableAnchor 준비될 때까지 대기
+        while (MRUKManager.Instance.TableAnchor == null)
+            yield return null;
+
+        tableObject = MRUKManager.Instance.TableAnchor.gameObject;
+        Debug.Log($"[BaekjaHandler] Assigned TABLE anchor: {tableObject.name}");
     }
 
     private void AssignTableAnchor(MRUKRoom room)
@@ -58,13 +56,13 @@ public class BaekjaHandler : MonoBehaviour
         {
             if (anchor.Label == MRUKAnchor.SceneLabels.TABLE)
             {
-                tablePosition = anchor.gameObject;
-                Debug.Log($"[BaekjaHandler] Found TABLE anchor → {tablePosition.name}");
+                tableObject = anchor.gameObject;
+                Debug.Log($"[BaekjaHandler] Found TABLE anchor → {tableObject.name}");
                 break;
             }
         }
 
-        if (tablePosition == null)
+        if (tableObject == null)
         {
             Debug.LogWarning("[BaekjaHandler] TABLE anchor not found in current MRUK room.");
         }
@@ -142,9 +140,9 @@ public class BaekjaHandler : MonoBehaviour
 
     public void SpawnFusedBaekja(GameObject baekja1, GameObject baekja2, GameObject perfectBaekja)
     {
-        if (tablePosition == null)
+        if (tableObject == null)
         {
-            Debug.LogWarning("[BaekjaHandler] SpawnPoint not assigned (TABLE anchor missing).");
+            Debug.LogWarning("[BaekjaHandler] tablePosition not assigned (TABLE anchor missing).");
             return;
         }
 
@@ -153,18 +151,18 @@ public class BaekjaHandler : MonoBehaviour
 
 
         // Renderer를 기준으로 높이 계산
-        Renderer rend = tablePosition.GetComponentInChildren<Renderer>();      // child에서 렌더러 찾기
+        Renderer rend = tableObject.GetComponentInChildren<Renderer>();      // child에서 렌더러 찾기
         if (rend == null)
         {
-            Debug.LogWarning("[BaekjaHandler] SpawnPoint에 Renderer가 없습니다.");
+            Debug.LogWarning("[BaekjaHandler] No renderer in Table's child.");
             return;
         }
 
         float topY = rend.bounds.center.y + rend.bounds.extents.y;
         Vector3 spawnPos = new Vector3(
-            tablePosition.transform.position.x,
+            tableObject.transform.position.x,
             topY,
-            tablePosition.transform.position.z
+            tableObject.transform.position.z
         );
 
 

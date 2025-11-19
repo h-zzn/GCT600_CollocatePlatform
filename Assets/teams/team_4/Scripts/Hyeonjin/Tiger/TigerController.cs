@@ -5,6 +5,7 @@ public class TigerController : MonoBehaviour
 {        
     [Header("Tiger Settings")]
     [SerializeField] private GameObject tigerObject;
+    [SerializeField] private float distanceFromScreen = 2f;
     [SerializeField] private float fadeDuration = 2f;
 
     [SerializeField] private DecalManager DecalManager;
@@ -54,7 +55,34 @@ public class TigerController : MonoBehaviour
 
     public void AppearTiger()
     {
+        PlaceTigerBehindScreen();
         tigerObject.SetActive(true);
-        FadeUtility.Instance?.FadeIn(tigerObject, fadeDuration, 0f);
+        FadeUtility.Instance?.FadeIn(tigerObject, fadeDuration, 1f);
+    }
+
+    private void PlaceTigerBehindScreen()
+    {
+        Debug.Log("[TigerController] Placing Tiger behind SCREEN anchor.");
+
+        var screenAnchor = MRUKManager.Instance.ScreenAnchor;
+
+        if (screenAnchor == null)
+        {
+            Debug.LogWarning("[TigerController] SCREEN anchor missing!");
+            return;
+        }
+
+        Vector3 pos = screenAnchor.transform.position;
+        pos.x -= distanceFromScreen;
+        pos.y = 0f;
+
+        // tigerObject에 위치/회전 적용
+        tigerObject.transform.position = pos;
+
+        // // 타이거가 스크린을 바라보게 회전
+        // Quaternion rot = Quaternion.LookRotation(-screenAnchor.transform.forward);
+        // tigerObject.transform.rotation = rot;
+
+        Debug.Log("[TigerController] Tiger placed exactly at SCREEN anchor position.");
     }
 }

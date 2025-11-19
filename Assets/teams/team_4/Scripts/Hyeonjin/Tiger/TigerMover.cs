@@ -4,7 +4,7 @@ using Meta.XR.MRUtilityKit;
 public class TigerMover : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public Transform targetPoint;
+    [SerializeField] public Transform targetPoint;
     public float moveSpeed = 1.5f;
     public float stopDistance = 0.3f;
 
@@ -19,7 +19,7 @@ public class TigerMover : MonoBehaviour
     {
         if (targetPoint == null)
         {
-            Debug.LogError("[TigerMover] Target Point is not assigned.");
+            // Debug.LogError("[TigerMover] Target Point is not assigned.");
         }
         
         if (MRUKManager.Instance != null)
