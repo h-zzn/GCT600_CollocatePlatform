@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using Meta.XR.MRUtilityKit;
 using System;
 
@@ -10,6 +11,12 @@ public class MRUKManager : MonoBehaviour
     public MRUKRoom CurrentRoom { get; private set; }
 
     public event Action<MRUKRoom> OnRoomReady;
+
+    public event Action OnAnchorsReady;
+
+    // Anchor 저장소
+    public MRUKAnchor TableAnchor { get; private set; }
+    public List<MRUKAnchor> OtherAnchors { get; private set; } = new();
 
     private void Awake()
     {
@@ -75,12 +82,34 @@ public class MRUKManager : MonoBehaviour
         if (CurrentRoom != null)
         {
             IsReady = true;
+            CollectAnchors();
             Debug.Log($"[MRUKManager] MRUK Room Ready: {CurrentRoom.name}");
             OnRoomReady?.Invoke(CurrentRoom);
         }
         else
         {
             Debug.LogWarning("[MRUKManager] MRUK initialized but no active room found.");
+        }
+    }
+
+    // lable 별 anchor 모으기
+    private void CollectAnchors()
+    {
+        TableAnchor = null;
+        OtherAnchors.Clear();
+
+        foreach (var anchor in CurrentRoom.Anchors)
+        {
+            switch (anchor.Label)
+            {
+                case MRUKAnchor.SceneLabels.TABLE:
+                    TableAnchor = anchor;
+                    break;
+
+                case MRUKAnchor.SceneLabels.OTHER:
+                    OtherAnchors.Add(anchor);
+                    break;
+            }
         }
     }
 }

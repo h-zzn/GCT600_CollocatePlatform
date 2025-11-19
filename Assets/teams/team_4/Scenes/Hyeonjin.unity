@@ -8612,7 +8612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: PrefabsToSpawn.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: PrefabsToSpawn.Array.data[0].Labels
@@ -8623,7 +8623,15 @@ PrefabInstance:
       value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
+      propertyPath: PrefabsToSpawn.Array.data[2].Labels
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: PrefabsToSpawn.Array.data[0].Prefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
+      propertyPath: PrefabsToSpawn.Array.data[2].Prefabs.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
@@ -8634,6 +8642,10 @@ PrefabInstance:
       propertyPath: 'PrefabsToSpawn.Array.data[1].Prefabs.Array.data[0]'
       value: 
       objectReference: {fileID: 5147515432007129474, guid: c10e26c97b8354845b1cc0616824b37f, type: 3}
+    - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
+      propertyPath: 'PrefabsToSpawn.Array.data[2].Prefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1905792406251565792, guid: 93b8ffa8f81a6c140a5407d610d85747, type: 3}
     - target: {fileID: 91450107390678966, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -19112,7 +19124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 0}
-  moveSpeed: 1.5
+  moveSpeed: 1
   stopDistance: 3
 --- !u!1 &1780155861
 GameObject:
@@ -23205,6 +23217,10 @@ PrefabInstance:
     - target: {fileID: 1905792406251565792, guid: 93b8ffa8f81a6c140a5407d610d85747, type: 3}
       propertyPath: m_Name
       value: screen1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1905792406251565792, guid: 93b8ffa8f81a6c140a5407d610d85747, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3761784171072771568, guid: 93b8ffa8f81a6c140a5407d610d85747, type: 3}
       propertyPath: m_Enabled

@@ -1175,7 +1175,7 @@ GameObject:
   - component: {fileID: 7528792457447392418}
   - component: {fileID: 1183868057533267323}
   m_Layer: 0
-  m_Name: WALL_FACE
+  m_Name: SCREEN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

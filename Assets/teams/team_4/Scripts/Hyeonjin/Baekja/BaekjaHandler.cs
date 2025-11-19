@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using Meta.XR.MRUtilityKit;
+using Oculus.Interaction;
 
 public class BaekjaHandler : MonoBehaviour
 {
@@ -16,9 +17,9 @@ public class BaekjaHandler : MonoBehaviour
     [Header("Fused Baekja Settings")]
     [SerializeField] private GameObject fusedBaekjaPrefab;
     
-    [SerializeField] private float spawnYThreshold = 1.5f;
+    //[SerializeField] private float spawnYThreshold = 1.5f;
     [SerializeField] private float fadeDuration = 2f;    // 페이드 인/아웃 지속 시간
-    private GameObject spawnPoint;
+    private GameObject tablePosition;
 
     private void Awake()
     {
@@ -26,17 +27,22 @@ public class BaekjaHandler : MonoBehaviour
     }
     private void Start()
     {
-        // MRUKManager를 통해 Room 상태 확인
-        if (MRUKManager.Instance != null)
+        if (MRUKManager.Instance == null)
         {
-            if (MRUKManager.Instance.IsReady)
-                AssignTableAnchor(MRUKManager.Instance.CurrentRoom);
-            else
-                MRUKManager.Instance.OnRoomReady += AssignTableAnchor;
+            Debug.LogError("[BaekjaHandler] MRUKManager instance not found.");
+            return;
+        }
+
+        if (MRUKManager.Instance.IsReady)
+        {
+            tablePosition = MRUKManager.Instance.TableAnchor?.gameObject;
         }
         else
         {
-            Debug.LogError("[BaekjaHandler] MRUKManager instance not found in scene.");
+            MRUKManager.Instance.OnAnchorsReady += () =>
+            {
+                tablePosition = MRUKManager.Instance.TableAnchor?.gameObject;
+            };
         }
     }
 
@@ -52,13 +58,13 @@ public class BaekjaHandler : MonoBehaviour
         {
             if (anchor.Label == MRUKAnchor.SceneLabels.TABLE)
             {
-                spawnPoint = anchor.gameObject;
-                Debug.Log($"[BaekjaHandler] Found TABLE anchor → {spawnPoint.name}");
+                tablePosition = anchor.gameObject;
+                Debug.Log($"[BaekjaHandler] Found TABLE anchor → {tablePosition.name}");
                 break;
             }
         }
 
-        if (spawnPoint == null)
+        if (tablePosition == null)
         {
             Debug.LogWarning("[BaekjaHandler] TABLE anchor not found in current MRUK room.");
         }
@@ -136,7 +142,7 @@ public class BaekjaHandler : MonoBehaviour
 
     public void SpawnFusedBaekja(GameObject baekja1, GameObject baekja2, GameObject perfectBaekja)
     {
-        if (spawnPoint == null)
+        if (tablePosition == null)
         {
             Debug.LogWarning("[BaekjaHandler] SpawnPoint not assigned (TABLE anchor missing).");
             return;
@@ -147,7 +153,7 @@ public class BaekjaHandler : MonoBehaviour
 
 
         // Renderer를 기준으로 높이 계산
-        Renderer rend = spawnPoint.GetComponentInChildren<Renderer>();      // child에서 렌더러 찾기
+        Renderer rend = tablePosition.GetComponentInChildren<Renderer>();      // child에서 렌더러 찾기
         if (rend == null)
         {
             Debug.LogWarning("[BaekjaHandler] SpawnPoint에 Renderer가 없습니다.");
@@ -156,9 +162,9 @@ public class BaekjaHandler : MonoBehaviour
 
         float topY = rend.bounds.center.y + rend.bounds.extents.y;
         Vector3 spawnPos = new Vector3(
-            spawnPoint.transform.position.x,
+            tablePosition.transform.position.x,
             topY,
-            spawnPoint.transform.position.z
+            tablePosition.transform.position.z
         );
 
 
@@ -191,26 +197,5 @@ public class BaekjaHandler : MonoBehaviour
         FadeUtility.Instance.FadeOut(baekja2, fadeDuration);
         Destroy(baekja1, fadeDuration); // 페이드 다 끝난 후 제거
         Destroy(baekja2, fadeDuration); ;
-    }
-    
-    // Gizmo로 테이블 윗면 표시 (Scene 뷰에서 확인 가능)
-    private void OnDrawGizmos()
-    {
-        if (spawnPoint == null) return;
-
-        Renderer rend = spawnPoint.GetComponentInChildren<Renderer>();
-        if (rend == null) return;
-
-        // 테이블의 윗면 중앙 좌표 계산
-        float topY = rend.bounds.center.y + rend.bounds.extents.y;
-        Vector3 topPos = new Vector3(
-            spawnPoint.transform.position.x,
-            topY,
-            spawnPoint.transform.position.z
-        );
-
-        // Gizmo 그리기
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(topPos, 0.03f);
     }
 }
