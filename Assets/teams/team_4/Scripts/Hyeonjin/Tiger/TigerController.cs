@@ -26,6 +26,10 @@ public class TigerController : MonoBehaviour
 
     private void Start()
     {
+        var mover = tigerObject.GetComponent<TigerMover>();
+        decalManager = FindFirstObjectByType<DecalManager>();
+        mover.OnLastJumpFinished += TryStartDecalProjection;
+
         // 초기에는 비활성 상태
         tigerObject.SetActive(false);
         
@@ -59,7 +63,7 @@ public class TigerController : MonoBehaviour
         FadeUtility.Instance?.FadeIn(tigerObject, fadeDuration, 1f);
         
         //데칼 적용
-        TryStartDecalProjection();
+        //TryStartDecalProjection();
     }
 
     private void TryStartDecalProjection()

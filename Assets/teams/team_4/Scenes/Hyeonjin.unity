@@ -1642,7 +1642,7 @@ MonoBehaviour:
   tigerObject: {fileID: 1773299430}
   distanceFromScreen: 2
   fadeDuration: 2
-  decalManager: {fileID: 910821744}
+  decalManager: {fileID: 0}
 --- !u!4 &89340974
 Transform:
   m_ObjectHideFlags: 0
@@ -19125,6 +19125,7 @@ MonoBehaviour:
   targetPoint: {fileID: 0}
   moveSpeed: 1
   stopDistance: 4
+  fadeDuration: 0.8
 --- !u!1 &1780155861
 GameObject:
   m_ObjectHideFlags: 0
