@@ -10,46 +10,19 @@ public class ProjectionController : MonoBehaviour
 
     [Header("Auto-Run")]
     public bool autoRun = false;
-  
-    private bool fadeOnStart = true;
+    public bool fadeOnStart = true;
+    public bool fallbackToMainCamera = true;
 
     [Header("Fade Settings")]
-    [Tooltip("등장 시간(초)")]
     public float fadeInDuration = 0.8f;
-    [Tooltip("등장 곡선")]
     public AnimationCurve fadeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    private Material decalMat;
     private Renderer targetRenderer;
     private Coroutine fadeRoutine;
+    private int decalMatIndex = -1;
 
     void Start()
     {
-        Debug.Log($"[ProjectionController] Start 시작 - GameObject: {gameObject.name}");
-    
-        targetRenderer = GetComponent<Renderer>();
-        if (targetRenderer == null)
-        {
-            Debug.LogError("[ProjectionController] Renderer 없음!");
-            enabled = false; return;
-        }
-        Debug.Log($"[ProjectionController] Renderer 찾음: {targetRenderer.name}");
-
-        if (shader == null)
-        {
-            Debug.LogError("[ProjectionController] Shader 미지정!");
-            enabled = false; return;
-        }
-        Debug.Log($"[ProjectionController] Shader: {shader.name}");
-
-        if (projector == null && Camera.main != null)
-            projector = Camera.main.transform;
-        
-        Debug.Log($"[ProjectionController] Projector: {(projector != null ? projector.name : "NULL")}");
-
-        decalMat = new Material(shader);
-        Debug.Log($"[ProjectionController] DecalMat 생성: {decalMat != null}");
-    
         targetRenderer = GetComponent<Renderer>();
         if (targetRenderer == null)
         {
@@ -63,12 +36,18 @@ public class ProjectionController : MonoBehaviour
             enabled = false; return;
         }
 
-        if (projector == null && Camera.main != null)
+        if (projector == null && fallbackToMainCamera && Camera.main != null)
             projector = Camera.main.transform;
 
-        decalMat = new Material(shader);
+        // 기존 머티리얼 복사
+        var mats = targetRenderer.materials; // 인스턴스 배열
+        var newMats = new Material[mats.Length + 1];
+        for (int i = 0; i < mats.Length; i++) newMats[i] = mats[i];
 
-        // 원본 Material의 BaseMap/Color (가능하면 가져오기)
+        // 새 데칼 머티리얼 생성
+        var decalMat = new Material(shader);
+
+        // 원본 정보 복사
         Material originalMat = targetRenderer.sharedMaterial;
         Texture baseMap = null;
         Color baseColor = Color.white;
@@ -89,28 +68,34 @@ public class ProjectionController : MonoBehaviour
         decalMat.SetColor("_BaseColor", baseColor);
         if (decalTex != null) decalMat.SetTexture("_DecalTex", decalTex);
 
-        
         if (decalMat.HasProperty("_DecalAlpha"))
             decalMat.SetFloat("_DecalAlpha", fadeOnStart ? 0f : 1f);
 
-        
-        var mats = targetRenderer.materials;
-        var newMats = new Material[mats.Length + 1];
-        for (int i = 0; i < mats.Length; i++) newMats[i] = mats[i];
-        newMats[mats.Length] = decalMat;
+        // 배열 마지막에 붙이기
+        decalMatIndex = newMats.Length - 1;
+        newMats[decalMatIndex] = decalMat;
         targetRenderer.materials = newMats;
 
-        
-        if (autoRun) StartCoroutine(IE_AutoProjectAndShow());
+        if (autoRun)
+            StartCoroutine(IE_AutoProjectAndShow());
+    }
+
+    private Material GetDecalMat()
+    {
+        if (targetRenderer == null) return null;
+        if (decalMatIndex < 0) return null;
+
+        var mats = targetRenderer.materials; // 현재 인스턴스 배열
+        if (decalMatIndex >= mats.Length) return null;
+
+        return mats[decalMatIndex];
     }
 
     private IEnumerator IE_AutoProjectAndShow()
     {
-        // 머티리얼 교체 직후 한 프레임 양보(드라이버 안정화를 위해)
         yield return null;
 
-        
-        ProjectOnce(); // 즉시 한 번 계산
+        ProjectOnce();
 
         if (fadeOnStart) PlayFadeIn(fadeInDuration);
         else ShowInstant();
@@ -118,7 +103,7 @@ public class ProjectionController : MonoBehaviour
 
     void Update()
     {
-        
+        var decalMat = GetDecalMat();
         if (projector == null || decalMat == null) return;
 
         Matrix4x4 view = projector.worldToLocalMatrix;
@@ -134,7 +119,17 @@ public class ProjectionController : MonoBehaviour
 
     public void ProjectOnce(float near = 0.01f, float far = 10f)
     {
-        if (projector == null || decalMat == null) return;
+        var decalMat = GetDecalMat();
+        if (decalMat == null)
+        {
+            Debug.LogWarning("[ProjectionController] ProjectOnce: decalMat == null");
+            return;
+        }
+        if (projector == null)
+        {
+            Debug.LogWarning("[ProjectionController] ProjectOnce: projector == null");
+            return;
+        }
 
         Matrix4x4 view = projector.worldToLocalMatrix;
         Matrix4x4 proj = Matrix4x4.Ortho(-1, 1, -1, 1, near, far);
@@ -145,35 +140,52 @@ public class ProjectionController : MonoBehaviour
 
         Matrix4x4 projectorMatrix = uv * proj * view;
         decalMat.SetMatrix("_ProjectorMatrix", projectorMatrix);
-    }
 
-    public void PlayFadeIn(float? durationOverride = null)
-    {
-        if (decalMat == null) return;
-        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-        fadeRoutine = StartCoroutine(FadeTo(1f, durationOverride ?? fadeInDuration));
-    }
-
-    public void HideInstant()
-    {
-        if (decalMat == null) return;
-        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-        if (decalMat.HasProperty("_DecalAlpha"))
-            decalMat.SetFloat("_DecalAlpha", 0f);
+        Debug.Log("[ProjectionController] ProjectOnce 완료");
     }
 
     public void ShowInstant()
     {
-        if (decalMat == null) return;
-        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-        if (decalMat.HasProperty("_DecalAlpha"))
-            decalMat.SetFloat("_DecalAlpha", 1f);
+        var decalMat = GetDecalMat();
+        if (decalMat == null)
+        {
+            Debug.LogWarning("[ProjectionController] ShowInstant: decalMat == null");
+            return;
+        }
+
+        float before = decalMat.HasProperty("_DecalAlpha") ? decalMat.GetFloat("_DecalAlpha") : -1f;
+        decalMat.SetFloat("_DecalAlpha", 1f);
+        float after = decalMat.HasProperty("_DecalAlpha") ? decalMat.GetFloat("_DecalAlpha") : -1f;
+
+        Debug.Log($"[ProjectionController] ShowInstant");
     }
 
-    // --------- 내부: 페이드 ---------
+    public void HideInstant()
+    {
+        var decalMat = GetDecalMat();
+        if (decalMat == null) return;
+        if (!decalMat.HasProperty("_DecalAlpha")) return;
+
+        decalMat.SetFloat("_DecalAlpha", 0f);
+    }
+
+    public void PlayFadeIn(float? durationOverride = null)
+    {
+        var decalMat = GetDecalMat();
+        if (decalMat == null)
+        {
+            Debug.LogWarning("[ProjectionController] PlayFadeIn: decalMat == null");
+            return;
+        }
+
+        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
+        fadeRoutine = StartCoroutine(FadeTo(1f, durationOverride ?? fadeInDuration));
+    }
 
     private IEnumerator FadeTo(float target, float duration)
     {
+        var decalMat = GetDecalMat();
+        if (decalMat == null) yield break;
         if (!decalMat.HasProperty("_DecalAlpha")) yield break;
 
         float start = decalMat.GetFloat("_DecalAlpha");
@@ -190,5 +202,7 @@ public class ProjectionController : MonoBehaviour
 
         decalMat.SetFloat("_DecalAlpha", target);
         fadeRoutine = null;
+
+        Debug.Log("[ProjectionController] FadeTo 종료");
     }
 }

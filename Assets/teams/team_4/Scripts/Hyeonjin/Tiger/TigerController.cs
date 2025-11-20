@@ -8,9 +8,8 @@ public class TigerController : MonoBehaviour
     [SerializeField] private float distanceFromScreen = 2f;
     [SerializeField] private float fadeDuration = 2f;
 
-    [SerializeField] private DecalManager DecalManager;
+    [SerializeField] private DecalManager decalManager;
 
-    [SerializeField] private BaekjaManager baekjaManager;
 
     private Animator animator;
     private GameObject currentFusedBaekja; // fusedBaekja 참조 저장
@@ -58,6 +57,15 @@ public class TigerController : MonoBehaviour
         PlaceTigerBehindScreen();
         tigerObject.SetActive(true);
         FadeUtility.Instance?.FadeIn(tigerObject, fadeDuration, 1f);
+        
+        //데칼 적용
+        TryStartDecalProjection();
+    }
+
+    private void TryStartDecalProjection()
+    {
+        Debug.Log($"[TigerController] 데칼 시작 대상: {currentFusedBaekja.name}");
+        decalManager.StartDecal(currentFusedBaekja);
     }
 
     private void PlaceTigerBehindScreen()

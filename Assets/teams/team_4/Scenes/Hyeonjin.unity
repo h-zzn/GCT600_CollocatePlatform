@@ -1642,8 +1642,7 @@ MonoBehaviour:
   tigerObject: {fileID: 1773299430}
   distanceFromScreen: 2
   fadeDuration: 2
-  DecalManager: {fileID: 910821744}
-  baekjaManager: {fileID: 43847934}
+  decalManager: {fileID: 910821744}
 --- !u!4 &89340974
 Transform:
   m_ObjectHideFlags: 0

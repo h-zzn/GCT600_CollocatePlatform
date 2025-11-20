@@ -2,22 +2,18 @@ using UnityEngine;
 
 public class DecalManager : MonoBehaviour
 {
-    private ProjectionController controller;
-
-    public void StartDecal()
+    public void StartDecal(GameObject baekja)
     {
-        controller = FindAnyObjectByType<ProjectionController>();
 
-        if (controller == null)
-        {
-            Debug.LogWarning("[DecalManager] ProjectionController를 찾을 수 없습니다.");
-        }
+        ProjectionController proj = null;
 
-        if (controller != null)
-        {
-            Debug.Log("[DecalManager] ProjectionController 발견, 데칼 투사 시작.");
-            controller.ProjectOnce();
-            controller.PlayFadeIn(); 
-        }
+        proj = baekja.GetComponentInChildren<ProjectionController>(true);
+
+        // 외부 제어 모드
+        proj.autoRun = false;
+        proj.ProjectOnce();
+        proj.PlayFadeIn();
+
+        Debug.Log($"[DecalManager] '{proj.gameObject.name}' 호출 완료");
     }
 }
