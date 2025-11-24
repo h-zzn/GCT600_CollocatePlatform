@@ -13,6 +13,7 @@ public class TigerController : MonoBehaviour
 
     private Animator animator;
     private GameObject currentFusedBaekja; // fusedBaekja 참조 저장
+    private MRUKAnchor currentScreenAnchor;
 
 
     private void Awake()
@@ -56,14 +57,14 @@ public class TigerController : MonoBehaviour
         Debug.Log($"[TigerController] FusedBaekja 참조 저장: {fusedBaekja.name}");
     }
 
-    public void AppearTiger()
+    public void AppearTiger(MRUKAnchor screenAnchor)
     {
-        PlaceTigerBehindScreen();
+        currentScreenAnchor = screenAnchor;
+
+        PlaceTigerBehindScreen();   // 해당 SCREEN 뒤에 배치
+
         tigerObject.SetActive(true);
         FadeUtility.Instance?.FadeIn(tigerObject, fadeDuration, 1f);
-        
-        //데칼 적용
-        //TryStartDecalProjection();
     }
 
     private void TryStartDecalProjection()
@@ -74,25 +75,20 @@ public class TigerController : MonoBehaviour
 
     private void PlaceTigerBehindScreen()
     {
-        Debug.Log("[TigerController] Placing Tiger behind SCREEN anchor.");
-
-        var screenAnchor = MRUKManager.Instance.ScreenAnchor;
-
-        if (screenAnchor == null)
+        if (currentScreenAnchor == null)
         {
-            Debug.LogWarning("[TigerController] SCREEN anchor missing!");
+            Debug.LogWarning("[TigerController] currentScreenAnchor 없음");
             return;
         }
-
-        Vector3 pos = screenAnchor.transform.position;
+        
+        Vector3 pos = currentScreenAnchor.transform.position;
         pos.x -= distanceFromScreen;
         pos.y = 0f;
 
-        // tigerObject에 위치/회전 적용
         tigerObject.transform.position = pos;
 
         // // 타이거가 스크린을 바라보게 회전
-        // Quaternion rot = Quaternion.LookRotation(-screenAnchor.transform.forward);
+        // Quaternion rot = Quaternion.LookRotation(currentScreenAnchor.transform.position - pos);
         // tigerObject.transform.rotation = rot;
 
         Debug.Log("[TigerController] Tiger placed exactly at SCREEN anchor position.");
