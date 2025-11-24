@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MarbleViewClipping : MonoBehaviour
+public class MarbleViewClipping2 : MonoBehaviour
 {
     [Header("References")]
     public Transform hmd;
