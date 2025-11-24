@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3117168233343400483}
   - component: {fileID: 878567623057853406}
   - component: {fileID: 1387149123213448494}
-  - component: {fileID: 770325347101705977}
   m_Layer: 0
   m_Name: LargeJeong
   m_TagString: Untagged
@@ -109,17 +108,3 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &770325347101705977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8076701841623981089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 924d7991d50f4fd4595452fbc914e9b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  smallJeongPrefab: {fileID: 6642724788953225202, guid: 3e5b30ad2fb32834ab2e6d0d9fab09e7, type: 3}
-  spawnOffset: {fileID: 0}
