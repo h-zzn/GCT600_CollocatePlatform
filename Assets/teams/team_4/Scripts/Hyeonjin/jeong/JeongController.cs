@@ -4,9 +4,7 @@ using Meta.XR.MRUtilityKit;
 
 public class JeongController : MonoBehaviour
 {
-    [SerializeField] private GameObject largeJeongPrefab;
-    [SerializeField] private GameObject smallJeongPrefab;
-
+    [SerializeField] private GameObject jeongPrefab;
     
     //[SerializeField] private float fadeDuration = 2f;    // 페이드 인/아웃 지속 시간
     [SerializeField] private float spawnYThreshold = 2.0f;
@@ -40,16 +38,16 @@ public class JeongController : MonoBehaviour
 
     private void ShowJeongPrefab(GameObject fusedBaekja)
     {
-        Vector3  largeJeongPos = fusedBaekja.transform.position + Vector3.up * spawnYThreshold;
-        GameObject largeJeongObj = Instantiate(largeJeongPrefab, largeJeongPos, Quaternion.identity);
+        Vector3 jeongPos = fusedBaekja.transform.position + Vector3.up * spawnYThreshold;
+        GameObject jeongObj = Instantiate(jeongPrefab, jeongPos, Quaternion.identity);
 
         // 정 페이드인
-        FadeUtility.Instance.FadeIn(largeJeongObj, 1f, 2f);
+        FadeUtility.Instance.FadeIn(jeongObj, 1f, 2f);
     }
 
-    private void HandleJeongCollision(GameObject smallJeongObj, GameObject collidedObj)
+    private void HandleJeongCollision(GameObject jeongObj, GameObject collidedObj)
     {
-        Debug.Log($"Small Jeong collided with {collidedObj.name}");
+        Debug.Log($"Jeong collided with {collidedObj.name}");
 
         // 1. 충돌한 객체에서 MRUKAnchor 찾기
         MRUKAnchor hitAnchor =
@@ -111,8 +109,8 @@ public class JeongController : MonoBehaviour
                 break;
         }
 
-        FadeUtility.Instance.FadeOut(smallJeongObj, 1f);
-        Destroy(smallJeongObj, 1.5f); // 페이드 아웃 후 제거
+        FadeUtility.Instance.FadeOut(jeongObj, 1f);
+        Destroy(jeongObj, 1.5f); // 페이드 아웃 후 제거
     }
     
 }
