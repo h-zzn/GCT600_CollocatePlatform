@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 5aec14499e7070d42bb8f4f2c0afed12
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 625f186215c104763be7675aa2d941aa, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289581
+  packageName: Korea Josun Character - ChunHyangJun
+  packageVersion: 1.0
+  assetPath: Assets/TripleAsset/Chr_ChunHyangJun/0_Commen_Cloth/HairCard/Shaders/ChhairCard.shadergraph
+  uploadId: 682755
