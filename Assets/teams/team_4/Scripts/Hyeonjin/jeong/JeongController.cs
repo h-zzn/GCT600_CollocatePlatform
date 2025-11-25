@@ -11,7 +11,7 @@ public class JeongController : MonoBehaviour
     //[SerializeField] private float fadeDuration = 2f;    // 페이드 인/아웃 지속 시간
     [SerializeField] private float spawnYThreshold = 2.0f;
 
-    [SerializeField] private TigerController tigerController;
+    [SerializeField] private AnimatedCharacterController animatedCharacterController;
 
     private void OnEnable()
     {
@@ -79,33 +79,31 @@ public class JeongController : MonoBehaviour
 
         Debug.Log($"[JeongController] Jeong collided with SCREEN ID: {screenId.screenID}");
 
+        if (animatedCharacterController == null)
+        {
+            Debug.LogError("[JeongController] animatedCharacterController is not assigned.");
+            return;
+        }
+
         // 4. ID 기반으로 처리
         switch (screenId.screenID)
         {
             case "SCREEN_Tiger":
                 Debug.Log("[JeongController] Activating Tiger for SCREEN_Tiger.");
-            
-                if (tigerController != null)
-                {
-                    tigerController.AppearTiger(hitAnchor);
-                }
-                else
-                {
-                    Debug.LogWarning("[JeongController] TigerController not assigned!");
-                }
+                animatedCharacterController.AppearTiger(hitAnchor);
                 break;
 
             // 다른 SCREEN ID 구현
             case "SCREEN_Flower":
                 Debug.Log("[JeongController] Handling SCREEN_Flower collision.");   
                 
-                tigerController.AppearFlower(hitAnchor);
+                animatedCharacterController.AppearFlower(hitAnchor);
 
                 break;
 
             case "SCREEN_Person":
                 Debug.Log("[JeongController] Handling SCREEN_Person collision.");
-                tigerController.AppearPerson(hitAnchor);
+                animatedCharacterController.AppearPerson(hitAnchor);
                 break;
 
             default:

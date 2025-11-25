@@ -1,7 +1,7 @@
 using UnityEngine;
 using Meta.XR.MRUtilityKit;
 
-public class TigerController : MonoBehaviour
+public class AnimatedCharacterController : MonoBehaviour
 {        
     [Header("Tiger Settings")]
     [SerializeField] private GameObject tigerObject;
