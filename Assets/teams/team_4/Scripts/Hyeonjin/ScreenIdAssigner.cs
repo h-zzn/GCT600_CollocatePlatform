@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections;
 using Meta.XR.MRUtilityKit;
+using TMPro;
 
 public class ScreenIDAssigner : MonoBehaviour
 {
@@ -37,33 +38,56 @@ public class ScreenIDAssigner : MonoBehaviour
 
     private void AssignIDs()
     {
-        var screens = FindObjectsOfType<ScreenIdentifier>();
-        if (screens.Length == 0)
+        // 1. MRUKAnchor에서 SCREEN 레이블을 가진 앵커 찾기
+        var screenAnchors = FindObjectsOfType<MRUKAnchor>()
+            .Where(a => a.Label == MRUKAnchor.SceneLabels.SCREEN)
+            .ToList();
+        
+        if (screenAnchors.Count == 0)
         {
-            Debug.LogWarning("[ScreenIDAssigner] No SCREEN prefabs found.");
+            Debug.LogWarning("[ScreenIDAssigner] No SCREEN anchors found.");
             return;
         }
 
-        // 위치 기반 정렬
-        var ordered = screens
+        // 2. anchor를 위치 순서대로 정렬 
+        screenAnchors = screenAnchors
             .OrderBy(s => s.transform.position.x)
             .ThenBy(s => s.transform.position.z)
             .ToList();
 
-        for (int i = 0; i < ordered.Count; i++)
+        // 3. 각 anchor의 child에서 ScreenIdentifier 찾기 / 없으면 생성
+        for (int i = 0; i < screenAnchors.Count; i++)
         {
-            string contentName;
+            var screenAnchor = screenAnchors[i];
 
-            if (i < screenNames.Length)
-                contentName = screenNames[i];     // 입력한 이름 사용
-            else
-                contentName = $"Extra_{i + 1}";   // 초과할 경우 예비 이름
+            // anchor의 child 중 screenIDentigier 있는지 체크
+            var IdComp = screenAnchor.GetComponentInChildren<ScreenIdentifier>();
 
-            string finalID = $"SCREEN_{contentName}";
+            // 없으면 자동으로 붙이기
+            if (IdComp == null)
+            {
+                Transform childScreen = screenAnchor.transform.GetChild(0);
 
-            ordered[i].screenID = finalID;
+                if (childScreen != null)
+                {
+                    IdComp = childScreen.gameObject.AddComponent<ScreenIdentifier>();
+                    Debug.Log($"[ScreenIDAssigner] Added ScreenIdentifier to '{childScreen.name}' under SCREEN anchor '{screenAnchor.name}'.");
+                }
+                else
+                {
+                    Debug.LogWarning($"[ScreenIDAssigner] SCREEN anchor '{screenAnchor.name}' has no child to attach ScreenIdentifier.");
+                    continue;
+                }
+            }
 
-            Debug.Log($"[ScreenIDAssigner] {ordered[i].name} → {ordered[i].screenID}");
+            // 4. ID 할당
+            string contentName = (i < screenNames.Length)
+                ? screenNames[i]
+                : $"Extra_{i + 1}";
+
+            IdComp.screenID = $"SCREEN_{contentName}";
+
+            Debug.Log($"[ScreenIDAssigner] {screenAnchor.name} → {IdComp.screenID}");
         }
     }
 }

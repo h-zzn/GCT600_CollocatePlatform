@@ -5,6 +5,9 @@ public class TigerController : MonoBehaviour
 {        
     [Header("Tiger Settings")]
     [SerializeField] private GameObject tigerObject;
+    [SerializeField] private GameObject flowerObject;
+    [SerializeField] private GameObject personObject;
+
     [SerializeField] private float distanceFromScreen = 2f;
     [SerializeField] private float fadeDuration = 2f;
 
@@ -61,10 +64,30 @@ public class TigerController : MonoBehaviour
     {
         currentScreenAnchor = screenAnchor;
 
-        PlaceTigerBehindScreen();   // 해당 SCREEN 뒤에 배치
+        PlaceCharacterBehindScreen(tigerObject);   // 해당 SCREEN 뒤에 배치
 
         tigerObject.SetActive(true);
         FadeUtility.Instance?.FadeIn(tigerObject, fadeDuration, 1f);
+    }
+
+    public void AppearFlower(MRUKAnchor screenAnchor)
+    {
+        currentScreenAnchor = screenAnchor;
+
+        PlaceCharacterBehindScreen(flowerObject);   // 해당 SCREEN 뒤에 배치
+
+        flowerObject.SetActive(true);
+        FadeUtility.Instance?.FadeIn(flowerObject, fadeDuration, 1f);
+    }
+
+    public void AppearPerson(MRUKAnchor screenAnchor)
+    {
+        currentScreenAnchor = screenAnchor;
+
+        PlaceCharacterBehindScreen(personObject);   // 해당 SCREEN 뒤에 배치
+
+        personObject.SetActive(true);
+        FadeUtility.Instance?.FadeIn(personObject, fadeDuration, 1f);
     }
 
     private void TryStartDecalProjection()
@@ -73,7 +96,7 @@ public class TigerController : MonoBehaviour
         decalManager.StartDecal(currentFusedBaekja);
     }
 
-    private void PlaceTigerBehindScreen()
+    private void PlaceCharacterBehindScreen(GameObject characterObject)
     {
         if (currentScreenAnchor == null)
         {
@@ -85,7 +108,7 @@ public class TigerController : MonoBehaviour
         pos.x -= distanceFromScreen;
         pos.y = 0f;
 
-        tigerObject.transform.position = pos;
+        characterObject.transform.position = pos;
 
         // // 타이거가 스크린을 바라보게 회전
         // Quaternion rot = Quaternion.LookRotation(currentScreenAnchor.transform.position - pos);

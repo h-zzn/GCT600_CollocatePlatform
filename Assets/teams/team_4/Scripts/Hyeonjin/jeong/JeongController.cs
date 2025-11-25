@@ -98,12 +98,14 @@ public class JeongController : MonoBehaviour
             // 다른 SCREEN ID 구현
             case "SCREEN_Flower":
                 Debug.Log("[JeongController] Handling SCREEN_Flower collision.");   
-                // Flower 관련 동작 구현
+                
+                tigerController.AppearFlower(hitAnchor);
+
                 break;
 
             case "SCREEN_Person":
                 Debug.Log("[JeongController] Handling SCREEN_Person collision.");
-                // Person 관련 동작 구현
+                tigerController.AppearPerson(hitAnchor);
                 break;
 
             default:
