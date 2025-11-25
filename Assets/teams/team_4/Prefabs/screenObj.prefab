@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9174721769037546822}
-  - component: {fileID: 274165515800995182}
+  - component: {fileID: 2556149787199201078}
   - component: {fileID: 6564895523776957891}
   - component: {fileID: 3761784171072771568}
   - component: {fileID: 6120101814704397927}
   - component: {fileID: 3341400259745713339}
   m_Layer: 0
-  m_Name: screen1
+  m_Name: screenObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &274165515800995182
+--- !u!114 &2556149787199201078
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
