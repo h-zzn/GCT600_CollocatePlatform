@@ -55,20 +55,43 @@ public class AnimatedCharacterController : MonoBehaviour
         // 등장 연출
         FadeUtility.Instance?.FadeIn(currentCharacter, fadeDuration, 1f);
 
-        // tiger mover 연결 (Tiger만 점프 이벤트 있음)
-        tigerMover = currentCharacter.GetComponent<TigerMover>();
+        // TABLE 앵커 가져오기
+        MRUKAnchor tableAnchor = null;
+        if (MRUKManager.Instance != null && MRUKManager.Instance.TableAnchor != null)
+        {
+            tableAnchor = MRUKManager.Instance.TableAnchor;
+        }
+        else
+        {
+            Debug.LogError("[AnimatedCharacterController] TABLE anchor not found in MRUKManager!");
+            return;
+        }
+
+        // TigerMover 체크
+        var tigerMover = currentCharacter.GetComponent<TigerMover>();
         if (tigerMover != null)
         {
             tigerMover.OnLastJumpFinished += TryStartDecalProjection;
-            if (MRUKManager.Instance != null && MRUKManager.Instance.TableAnchor != null)
-            {
-                tigerMover.StartMoving(MRUKManager.Instance.TableAnchor);
-            }
-            else
-            {
-                Debug.LogError("[AnimatedCharacterController] TABLE anchor not found in MRUKManager!");
-            }
+            tigerMover.StartMoving(tableAnchor);
+            Debug.Log("[AnimatedCharacterController] TigerMover started");
+            return;
         }
+
+        // ChunhyangMover 체크
+        var chunhyangMover = currentCharacter.GetComponent<ChunhyangMover>();
+        if (chunhyangMover != null)
+        {
+            // Chunhyang은 decal projection 없음
+            chunhyangMover.OnLastActionFinished += TryStartDecalProjection;
+            // Screen 앵커도 함께 전달
+            chunhyangMover.StartMoving(tableAnchor, currentScreenAnchor);
+            Debug.Log("[AnimatedCharacterController] ChunhyangMover started");
+            return;
+        }
+
+        // 다른 Mover들도 여기에 추가 가능
+        // var flowerMover = currentCharacter.GetComponent<FlowerMover>();
+        // if (flowerMover != null) { ... }
     }
 
     // Tiger 호출

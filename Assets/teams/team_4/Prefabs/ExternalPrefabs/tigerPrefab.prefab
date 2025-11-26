@@ -721,7 +721,7 @@ GameObject:
   - component: {fileID: 8415938560336053005}
   - component: {fileID: 153615773721015973}
   m_Layer: 0
-  m_Name: tiger_sv_rm_HLP
+  m_Name: tigerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

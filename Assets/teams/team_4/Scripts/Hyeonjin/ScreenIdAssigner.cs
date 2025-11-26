@@ -66,7 +66,7 @@ public class ScreenIDAssigner : MonoBehaviour
 
             string finalID = $"SCREEN_{contentName}";
             uniqueScreens[i].screenID = finalID;
-            uniqueScreens[i].gameObject.name = $"SCREEN_OBJ_{contentName}";
+            //uniqueScreens[i].gameObject.name = $"SCREEN_OBJ_{contentName}";
             
             Debug.Log($"[ScreenIDAssigner] {uniqueScreens[i].name} → {finalID}");
         }

@@ -50,8 +50,7 @@ public class TigerMover : MonoBehaviour
             if (isLastJumping)
             {
                 OnLastJumpFinished?.Invoke();
-                FadeUtility.Instance?.FadeOut(gameObject, fadeDuration, 0f);
-
+                FadeUtility.Instance?.FadeOutOpaque(gameObject, fadeDuration, 0f);
                 Destroy(gameObject, fadeDuration);
             }
             return;
