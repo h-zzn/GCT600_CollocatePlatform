@@ -5,10 +5,10 @@ using System;
 public class TigerMover : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] public Transform targetPoint;
+    public Transform targetPoint;
     public float moveSpeed = 1.5f;
     public float stopDistance = 0.3f;
-    public float fadeDuration = 2f;    
+    public float fadeDuration = 2f;
 
     private Animator animator;
     public event Action OnLastJumpFinished;
@@ -20,36 +20,36 @@ public class TigerMover : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private void Start()
+    // AnimatedCharacterController에서 호출하는 함수
+    public void StartMoving(MRUKAnchor anchor)
     {
+        if (anchor == null)
+        {
+            Debug.LogError("[TigerMover] StartMoving: anchor is NULL");
+            return;
+        }
+
+        // 이동 목표지점 = TABLE 앵커 transform
+        targetPoint = anchor.transform;
+
+        Debug.Log($"[TigerMover] StartMoving(): TargetPoint set to → {anchor.name}");
+
+        // 이동 시작 → Walk 애니메이션 켜기
+        //animator.SetBool("isWalking", true);
+
         isLastJumping = false;
-        
-        if (targetPoint == null)
-        {
-            // Debug.LogError("[TigerMover] Target Point is not assigned.");
-        }
-        
-        if (MRUKManager.Instance != null)
-        {
-            if (MRUKManager.Instance.IsReady)
-                AssignTableAnchor(MRUKManager.Instance.CurrentRoom);
-            else
-                MRUKManager.Instance.OnRoomReady += AssignTableAnchor;
-        }
     }
 
     private void Update()
     {
         if (targetPoint == null) return;
 
+        // Jump 상태 감지
         if (IsInJumpingState())
         {
-            Debug.Log("[TigerMover] Jumping 상태 감지.");
-
             if (isLastJumping)
             {
                 OnLastJumpFinished?.Invoke();
-                Debug.Log("[TigerMover] 마지막 점프 완료, 사라짐 처리 시작.");
                 FadeUtility.Instance?.FadeOut(gameObject, fadeDuration, 0f);
 
                 Destroy(gameObject, fadeDuration);
@@ -57,45 +57,20 @@ public class TigerMover : MonoBehaviour
             return;
         }
 
-        if (!IsInWalkState()) return;
-
-        MoveToTarget();
-    }
-
-    private void AssignTableAnchor(MRUKRoom room)
-    {
-        if (room == null)
-        {
-            Debug.LogWarning("[TigerMover] No MRUKRoom provided.");
-            return;
-        }
-
-        foreach (var anchor in room.Anchors)
-        {
-            if (anchor.Label == MRUKAnchor.SceneLabels.TABLE)
-            {
-                targetPoint = anchor.transform;
-                Debug.Log($"[TigerMover] TABLE Anchor set as target → {anchor.name}");
-                return;
-            }
-        }
-
-        Debug.LogWarning("[TigerMover] TABLE Anchor not found.");
+        // Walk 중일 때만 이동
+        if (IsInWalkState())
+            MoveToTarget();
     }
 
     private bool IsInWalkState()
     {
-        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
-
-        return info.IsName("Walk");  
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("Walk");
     }
 
     private bool IsInJumpingState()
     {
         AnimatorClipInfo[] clips = animator.GetCurrentAnimatorClipInfo(0);
-
         if (clips.Length == 0) return false;
-
         return clips[0].clip.name.Contains("Jumping");
     }
 
@@ -103,6 +78,7 @@ public class TigerMover : MonoBehaviour
     {
         Vector3 dir = targetPoint.position - transform.position;
         dir.y = 0;
+
         float dist = dir.magnitude;
 
         if (dist > stopDistance)
@@ -116,7 +92,7 @@ public class TigerMover : MonoBehaviour
         }
         else
         {
-            // 도착 → Walk 끄기
+            // 도착 → 마지막 Jump 시작 조건
             animator.SetBool("isWalking", false);
             isLastJumping = true;
         }

@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Linq;
 using System.Collections;
 using Meta.XR.MRUtilityKit;
-using TMPro;
 
 public class ScreenIDAssigner : MonoBehaviour
 {
@@ -38,56 +37,38 @@ public class ScreenIDAssigner : MonoBehaviour
 
     private void AssignIDs()
     {
-        // 1. MRUKAnchor에서 SCREEN 레이블을 가진 앵커 찾기
-        var screenAnchors = FindObjectsOfType<MRUKAnchor>()
-            .Where(a => a.Label == MRUKAnchor.SceneLabels.SCREEN)
-            .ToList();
-        
-        if (screenAnchors.Count == 0)
-        {
-            Debug.LogWarning("[ScreenIDAssigner] No SCREEN anchors found.");
-            return;
-        }
+        var screens = FindObjectsOfType<ScreenIdentifier>();
 
-        // 2. anchor를 위치 순서대로 정렬 
-        screenAnchors = screenAnchors
+        // 활성화된 오브젝트만 필터링
+        var activeScreens = screens
+            .Where(s => s.gameObject.activeSelf)
+            .ToList();
+
+        // 위치 기반으로 중복 제거 (같은 위치 = 중복)
+        var uniqueScreens = activeScreens
+            .GroupBy(s => new Vector3(
+                Mathf.Round(s.transform.position.x * 100f) / 100f,
+                Mathf.Round(s.transform.position.y * 100f) / 100f,
+                Mathf.Round(s.transform.position.z * 100f) / 100f
+            ))
+            .Select(g => g.First())
             .OrderBy(s => s.transform.position.x)
             .ThenBy(s => s.transform.position.z)
             .ToList();
 
-        // 3. 각 anchor의 child에서 ScreenIdentifier 찾기 / 없으면 생성
-        for (int i = 0; i < screenAnchors.Count; i++)
+        Debug.Log($"[ScreenIDAssigner] Unique screens after deduplication: {uniqueScreens.Count}");
+
+        for (int i = 0; i < uniqueScreens.Count; i++)
         {
-            var screenAnchor = screenAnchors[i];
-
-            // anchor의 child 중 screenIDentigier 있는지 체크
-            var IdComp = screenAnchor.GetComponentInChildren<ScreenIdentifier>();
-
-            // 없으면 자동으로 붙이기
-            if (IdComp == null)
-            {
-                Transform childScreen = screenAnchor.transform.GetChild(0);
-
-                if (childScreen != null)
-                {
-                    IdComp = childScreen.gameObject.AddComponent<ScreenIdentifier>();
-                    Debug.Log($"[ScreenIDAssigner] Added ScreenIdentifier to '{childScreen.name}' under SCREEN anchor '{screenAnchor.name}'.");
-                }
-                else
-                {
-                    Debug.LogWarning($"[ScreenIDAssigner] SCREEN anchor '{screenAnchor.name}' has no child to attach ScreenIdentifier.");
-                    continue;
-                }
-            }
-
-            // 4. ID 할당
-            string contentName = (i < screenNames.Length)
-                ? screenNames[i]
+            string contentName = i < screenNames.Length 
+                ? screenNames[i] 
                 : $"Extra_{i + 1}";
 
-            IdComp.screenID = $"SCREEN_{contentName}";
-
-            Debug.Log($"[ScreenIDAssigner] {screenAnchor.name} → {IdComp.screenID}");
+            string finalID = $"SCREEN_{contentName}";
+            uniqueScreens[i].screenID = finalID;
+            uniqueScreens[i].gameObject.name = $"SCREEN_OBJ_{contentName}";
+            
+            Debug.Log($"[ScreenIDAssigner] {uniqueScreens[i].name} → {finalID}");
         }
     }
 }

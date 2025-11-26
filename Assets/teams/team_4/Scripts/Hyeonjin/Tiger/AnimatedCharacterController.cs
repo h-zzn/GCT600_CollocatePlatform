@@ -2,118 +2,131 @@ using UnityEngine;
 using Meta.XR.MRUtilityKit;
 
 public class AnimatedCharacterController : MonoBehaviour
-{        
-    [Header("Tiger Settings")]
-    [SerializeField] private GameObject tigerObject;
-    [SerializeField] private GameObject flowerObject;
-    [SerializeField] private GameObject personObject;
+{
+    [Header("Character Prefabs")] 
+    [SerializeField] private GameObject tigerPrefab;
+    [SerializeField] private GameObject flowerPrefab;
+    [SerializeField] private GameObject personPrefab;
 
+    [Header("Settings")]
     [SerializeField] private float distanceFromScreen = 2f;
     [SerializeField] private float fadeDuration = 2f;
 
     [SerializeField] private DecalManager decalManager;
 
-
-    private Animator animator;
-    private GameObject currentFusedBaekja; // fusedBaekja 참조 저장
+    private GameObject currentCharacter;      // 현재 생성된 캐릭터 Clone
     private MRUKAnchor currentScreenAnchor;
+    private GameObject currentFusedBaekja;
 
-
-    private void Awake()
-    {
-        if (tigerObject == null)
-            tigerObject = this.gameObject;
-
-        animator = GetComponent<Animator>();
-
-    }
+    private TigerMover tigerMover;
 
     private void Start()
     {
-        var mover = tigerObject.GetComponent<TigerMover>();
-        decalManager = FindFirstObjectByType<DecalManager>();
-        mover.OnLastJumpFinished += TryStartDecalProjection;
-
-        // 초기에는 비활성 상태
-        tigerObject.SetActive(false);
-        
-        // BaekjaHandler의 OnBaekjaCreated 이벤트 구독
         if (BaekjaHandler.Instance != null)
-        {
             BaekjaHandler.Instance.OnBaekjaCreated += OnFusedBaekjaCreated;
-        }
     }
 
     private void OnDestroy()
     {
-        // 이벤트 구독 해제
         if (BaekjaHandler.Instance != null)
-        {
             BaekjaHandler.Instance.OnBaekjaCreated -= OnFusedBaekjaCreated;
-        }
     }
 
-    // fusedBaekja가 생성되면 참조 저장
     private void OnFusedBaekjaCreated(GameObject fusedBaekja)
     {
         currentFusedBaekja = fusedBaekja;
-        Debug.Log($"[TigerController] FusedBaekja 참조 저장: {fusedBaekja.name}");
     }
 
-    public void AppearTiger(MRUKAnchor screenAnchor)
+    // 캐릭터 스폰 공통 함수
+    private void SpawnCharacter(GameObject prefab, MRUKAnchor anchor)
     {
-        currentScreenAnchor = screenAnchor;
+        // 기존 캐릭터가 존재했다면 제거
+        if (currentCharacter != null)
+            Destroy(currentCharacter);
 
-        PlaceCharacterBehindScreen(tigerObject);   // 해당 SCREEN 뒤에 배치
+        currentScreenAnchor = anchor;
 
-        tigerObject.SetActive(true);
-        FadeUtility.Instance?.FadeIn(tigerObject, fadeDuration, 1f);
+        // Clone 생성
+        currentCharacter = Instantiate(prefab);
+
+        // 배치
+        PlaceCharacterBehindScreen(currentCharacter);
+
+        // 등장 연출
+        FadeUtility.Instance?.FadeIn(currentCharacter, fadeDuration, 1f);
+
+        // tiger mover 연결 (Tiger만 점프 이벤트 있음)
+        tigerMover = currentCharacter.GetComponent<TigerMover>();
+        if (tigerMover != null)
+        {
+            tigerMover.OnLastJumpFinished += TryStartDecalProjection;
+            if (MRUKManager.Instance != null && MRUKManager.Instance.TableAnchor != null)
+            {
+                tigerMover.StartMoving(MRUKManager.Instance.TableAnchor);
+            }
+            else
+            {
+                Debug.LogError("[AnimatedCharacterController] TABLE anchor not found in MRUKManager!");
+            }
+        }
     }
 
-    public void AppearFlower(MRUKAnchor screenAnchor)
+    // Tiger 호출
+    public void AppearTiger(MRUKAnchor anchor)
     {
-        currentScreenAnchor = screenAnchor;
-
-        PlaceCharacterBehindScreen(flowerObject);   // 해당 SCREEN 뒤에 배치
-
-        flowerObject.SetActive(true);
-        FadeUtility.Instance?.FadeIn(flowerObject, fadeDuration, 1f);
+        SpawnCharacter(tigerPrefab, anchor);
     }
 
-    public void AppearPerson(MRUKAnchor screenAnchor)
+    // Flower 호출
+    public void AppearFlower(MRUKAnchor anchor)
     {
-        currentScreenAnchor = screenAnchor;
-
-        PlaceCharacterBehindScreen(personObject);   // 해당 SCREEN 뒤에 배치
-
-        personObject.SetActive(true);
-        FadeUtility.Instance?.FadeIn(personObject, fadeDuration, 1f);
+        SpawnCharacter(flowerPrefab, anchor);
     }
 
+    // Person 호출
+    public void AppearPerson(MRUKAnchor anchor)
+    {
+        SpawnCharacter(personPrefab, anchor);
+    }
+
+    // Tiger에서만 실행됨
     private void TryStartDecalProjection()
     {
-        Debug.Log($"[TigerController] 데칼 시작 대상: {currentFusedBaekja.name}");
-        decalManager.StartDecal(currentFusedBaekja);
+        if (decalManager != null && currentFusedBaekja != null)
+        {
+            decalManager.StartDecal(currentFusedBaekja);
+        }
     }
 
-    private void PlaceCharacterBehindScreen(GameObject characterObject)
+    private void PlaceCharacterBehindScreen(GameObject obj)
+{
+    if (currentScreenAnchor == null)
     {
-        if (currentScreenAnchor == null)
-        {
-            Debug.LogWarning("[TigerController] currentScreenAnchor 없음");
-            return;
-        }
-        
-        Vector3 pos = currentScreenAnchor.transform.position;
-        pos.x -= distanceFromScreen;
-        pos.y = 0f;
+        Debug.LogWarning("currentScreenAnchor missing");
+        return;
+    }
 
-        characterObject.transform.position = pos;
+    // Screen의 UP 방향의 반대쪽 = 뒤쪽
+    Vector3 behindDirection = -currentScreenAnchor.transform.up;
+    
+    // Screen 위치에서 뒤쪽으로 distanceFromScreen만큼 이동
+    Vector3 pos = currentScreenAnchor.transform.position + (behindDirection * distanceFromScreen);
+    
+    // Y축은 바닥에 고정
+    pos.y = 0f;
+    
+    obj.transform.position = pos;
+    
+    // Tiger가 Screen을 바라보도록 회전 (up 방향 기준)
+    Vector3 lookDirection = currentScreenAnchor.transform.up;
+    lookDirection.y = 0;  // Y축 회전만
+    if (lookDirection != Vector3.zero)
+    {
+        obj.transform.rotation = Quaternion.LookRotation(lookDirection);
+    }
 
-        // // 타이거가 스크린을 바라보게 회전
-        // Quaternion rot = Quaternion.LookRotation(currentScreenAnchor.transform.position - pos);
-        // tigerObject.transform.rotation = rot;
-
-        Debug.Log("[TigerController] Tiger placed exactly at SCREEN anchor position.");
+    Debug.Log($"[PlaceCharacter] Screen pos: {currentScreenAnchor.transform.position}, " +
+              $"Screen up: {currentScreenAnchor.transform.up}, " +
+              $"Tiger placed at: {pos}");
     }
 }

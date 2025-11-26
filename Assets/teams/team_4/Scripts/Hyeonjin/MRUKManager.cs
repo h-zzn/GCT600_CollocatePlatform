@@ -16,7 +16,7 @@ public class MRUKManager : MonoBehaviour
 
     // Anchor 저장소
     public MRUKAnchor TableAnchor { get; private set; }
-    public MRUKAnchor ScreenAnchor { get; private set; }
+    public List<MRUKAnchor> ScreenAnchors { get; private set; } = new();
     public List<MRUKAnchor> OtherAnchors { get; private set; } = new();
 
     private void Awake()
@@ -97,7 +97,7 @@ public class MRUKManager : MonoBehaviour
     private void CollectAnchors()
     {
         TableAnchor = null;
-        ScreenAnchor = null;
+        ScreenAnchors.Clear();
         OtherAnchors.Clear();
 
         foreach (var anchor in CurrentRoom.Anchors)
@@ -109,7 +109,7 @@ public class MRUKManager : MonoBehaviour
                     break;
 
                 case MRUKAnchor.SceneLabels.SCREEN:
-                    ScreenAnchor = anchor;
+                    ScreenAnchors.Add(anchor);
                     break;
 
                 case MRUKAnchor.SceneLabels.OTHER:

@@ -1797,9 +1797,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 435f528c442cd79489a6f75f18cfdb3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tigerObject: {fileID: 1773299430}
-  flowerObject: {fileID: 7828841}
-  personObject: {fileID: 249823513}
+  tigerPrefab: {fileID: 3989184835061150127, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
+  flowerPrefab: {fileID: 5083505937172475603, guid: b0ea5794f3584274b8c3f1621ec05cb7, type: 3}
+  personPrefab: {fileID: 21765920008759215, guid: 5e0dfdb029a93b74491d1c763ddb218c, type: 3}
   distanceFromScreen: 2
   fadeDuration: 2
   decalManager: {fileID: 0}
