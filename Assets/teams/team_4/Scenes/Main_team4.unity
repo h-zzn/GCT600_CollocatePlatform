@@ -1704,70 +1704,6 @@ Transform:
   - {fileID: 1666856853}
   m_Father: {fileID: 1663492775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &82298710
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3989184835061150127, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_Name
-      value: tiger_sv_rm_HLP
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061150127, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 7.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.8556969
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.5174774
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 62.326
-      objectReference: {fileID: 0}
-    - target: {fileID: 3989184835061443983, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3989184835061150127, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1773299434}
-  m_SourcePrefab: {fileID: 100100000, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
 --- !u!1 &89340972
 GameObject:
   m_ObjectHideFlags: 0
@@ -1802,7 +1738,7 @@ MonoBehaviour:
   personPrefab: {fileID: 21765920008759215, guid: 5e0dfdb029a93b74491d1c763ddb218c, type: 3}
   distanceFromScreen: 2
   fadeDuration: 2
-  decalManager: {fileID: 0}
+  decalManager: {fileID: 910821744}
 --- !u!4 &89340974
 Transform:
   m_ObjectHideFlags: 0
@@ -19709,27 +19645,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 893250372}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1773299430 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3989184835061150127, guid: 931cb6324fe3248ec805de9a92219a5e, type: 3}
-  m_PrefabInstance: {fileID: 82298710}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1773299434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773299430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c2d2b2e5a647040baf486c5c735297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetPoint: {fileID: 0}
-  moveSpeed: 1
-  stopDistance: 4
-  fadeDuration: 0.8
 --- !u!1 &1780155861
 GameObject:
   m_ObjectHideFlags: 0
@@ -24338,7 +24253,6 @@ SceneRoots:
   - {fileID: 209019476}
   - {fileID: 910821745}
   - {fileID: 307760926}
-  - {fileID: 82298710}
   - {fileID: 533903178}
   - {fileID: 1488418059}
   - {fileID: 1061344695}
