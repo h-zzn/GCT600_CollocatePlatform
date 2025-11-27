@@ -17,6 +17,7 @@ public class AnimatedCharacterController : MonoBehaviour
     private GameObject currentCharacter;      // 현재 생성된 캐릭터 Clone
     private MRUKAnchor currentScreenAnchor;
     private GameObject currentFusedBaekja;
+    private DecalType currentDecalType;
 
     private TigerMover tigerMover;
 
@@ -97,18 +98,21 @@ public class AnimatedCharacterController : MonoBehaviour
     // Tiger 호출
     public void AppearTiger(MRUKAnchor anchor)
     {
+        currentDecalType = DecalType.Tiger;
         SpawnCharacter(tigerPrefab, anchor);
     }
 
     // Flower 호출
     public void AppearFlower(MRUKAnchor anchor)
     {
+        currentDecalType = DecalType.Flower;
         SpawnCharacter(flowerPrefab, anchor);
     }
 
     // Person 호출
     public void AppearPerson(MRUKAnchor anchor)
     {
+        currentDecalType = DecalType.Person;
         SpawnCharacter(personPrefab, anchor);
     }
 
@@ -117,7 +121,7 @@ public class AnimatedCharacterController : MonoBehaviour
     {
         if (decalManager != null && currentFusedBaekja != null)
         {
-            decalManager.StartDecal(currentFusedBaekja);
+            decalManager.StartDecal(currentFusedBaekja, currentDecalType);
         }
     }
 

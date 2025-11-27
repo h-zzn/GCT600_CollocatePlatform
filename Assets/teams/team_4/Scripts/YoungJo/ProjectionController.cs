@@ -169,6 +169,27 @@ public class ProjectionController : MonoBehaviour
         decalMat.SetFloat("_DecalAlpha", 0f);
     }
 
+    public void SetDecalTexture(Texture2D newDecalTex)
+    {
+        decalTex = newDecalTex;
+
+        var decalMat = GetDecalMat();
+        if (decalMat == null)
+        {
+            Debug.LogWarning("[ProjectionController] SetDecalTexture: decalMat == null");
+            return;
+        }
+
+        if (decalTex == null)
+        {
+            Debug.LogWarning("[ProjectionController] SetDecalTexture: newDecalTex == null");
+            return;
+        }
+
+        decalMat.SetTexture("_DecalTex", decalTex);
+        Debug.Log($"[ProjectionController] SetDecalTexture: {decalTex.name}");
+    }
+
     public void PlayFadeIn(float? durationOverride = null)
     {
         var decalMat = GetDecalMat();
