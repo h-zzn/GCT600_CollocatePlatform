@@ -10613,6 +10613,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b63b44006d3d4014993ec23c586a7f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tigerDecal: {fileID: 2800000, guid: f7544e7a6727d3a42bb6a11b39b7f7f2, type: 3}
+  flowerDecal: {fileID: 2800000, guid: 38ac4276bd7bba14390fbeb18042b68f, type: 3}
+  personDecal: {fileID: 2800000, guid: f87d912f9a64d2d458f3f8a745679572, type: 3}
 --- !u!4 &910821745
 Transform:
   m_ObjectHideFlags: 0
