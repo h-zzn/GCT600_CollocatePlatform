@@ -6,7 +6,9 @@ public class AnimatedCharacterController : MonoBehaviour
     [Header("Character Prefabs")] 
     [SerializeField] private GameObject tigerPrefab;
     [SerializeField] private GameObject flowerPrefab;
-    [SerializeField] private GameObject personPrefab;
+    [Header("Person Prefabs")]
+    [SerializeField] private GameObject[] personPrefabs;   // ★ 기존 personPrefab 삭제
+
 
     [Header("Settings")]
     [SerializeField] private float distanceFromScreen = 2f;
@@ -95,6 +97,78 @@ public class AnimatedCharacterController : MonoBehaviour
         // if (flowerMover != null) { ... }
     }
 
+    private void SpawnPersonGroup(MRUKAnchor anchor)
+    {
+        if (personPrefabs == null || personPrefabs.Length != 3)
+        {
+            Debug.LogError("[AnimatedCharacterController] personPrefabs array must contain exactly 3 prefabs!");
+            return;
+        }
+
+        currentScreenAnchor = anchor;
+
+        // TABLE 앵커 가져오기
+        MRUKAnchor tableAnchor = MRUKManager.Instance.TableAnchor;
+        if (tableAnchor == null)
+        {
+            Debug.LogError("[AnimatedCharacterController] TABLE anchor missing!");
+            return;
+        }
+
+        // 3명 좌/중/우 offset
+        Vector3[] offsets = new Vector3[]
+        {
+            new Vector3(-0.5f, 0, 0),
+            Vector3.zero,
+            new Vector3(0.5f, 0, 0)
+        };
+
+        for (int i = 0; i < 3; i++)
+        {
+            // ★ 각각 서로 다른 prefab을 instantiate
+            GameObject person = Instantiate(personPrefabs[i]);
+
+            // ★ 위치 배치 (offset 적용)
+            PlaceCharacterBehindScreenWithOffset(person, offsets[i]);
+
+            // ★ Fade-in
+            FadeUtility.Instance?.FadeIn(person, fadeDuration, 1f);
+
+            // ★ mover 실행
+            var mover = person.GetComponent<ChunhyangMover>();
+            if (mover != null)
+            {
+                mover.OnLastActionFinished += TryStartDecalProjection;
+                mover.StartMoving(tableAnchor, currentScreenAnchor);
+            }
+
+            Debug.Log($"[AnimatedCharacterController] Spawned person #{i+1} ({personPrefabs[i].name})");
+        }
+    }
+
+
+    private void PlaceCharacterBehindScreenWithOffset(GameObject obj, Vector3 extraOffset)
+    {
+        if (currentScreenAnchor == null)
+            return;
+
+        Vector3 behindDirection = -currentScreenAnchor.transform.up;
+        Vector3 pos = currentScreenAnchor.transform.position + (behindDirection * distanceFromScreen);
+
+        pos += extraOffset;
+        pos.y = 0f;
+
+        obj.transform.position = pos;
+
+        Vector3 lookDir = currentScreenAnchor.transform.up;
+        lookDir.y = 0;
+        if (lookDir != Vector3.zero)
+            obj.transform.rotation = Quaternion.LookRotation(lookDir);
+    }
+
+
+
+
     // Tiger 호출
     public void AppearTiger(MRUKAnchor anchor)
     {
@@ -113,7 +187,7 @@ public class AnimatedCharacterController : MonoBehaviour
     public void AppearPerson(MRUKAnchor anchor)
     {
         currentDecalType = DecalType.Person;
-        SpawnCharacter(personPrefab, anchor);
+        SpawnPersonGroup(anchor);
     }
 
     // Tiger에서만 실행됨
