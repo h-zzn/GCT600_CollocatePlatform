@@ -19,7 +19,7 @@ public class NetworkServer : MonoBehaviour
     private Thread receiveThread;
     private bool isRunning = false;
 
-    private string receivedData = "";
+    private string receivedData = null;  // 초기값 null로 변경
 
     void Start()
     {
@@ -76,6 +76,13 @@ public class NetworkServer : MonoBehaviour
 
                 string message = Encoding.UTF8.GetString(data);
 
+                // 빈 메시지 무시
+                if (string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.LogWarning($"[Network Server] Received empty message from {anyIP.Address}:{anyIP.Port}");
+                    continue;
+                }
+
                 lock (this)
                 {
                     receivedData = message;
@@ -110,11 +117,13 @@ public class NetworkServer : MonoBehaviour
             }
         }
 
-        if (currentData != null)
+        // 빈 문자열 체크 추가
+        if (!string.IsNullOrWhiteSpace(currentData))
         {
             if (displayManager != null)
             {
                 currentData = currentData.Trim();
+                Debug.Log($"[Network Server] Processing message: {currentData}");
                 displayManager.ChangeImage(currentData);
             }
         }

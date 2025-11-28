@@ -46,16 +46,17 @@ public class DisplayManager : MonoBehaviour
 
     private void Update()
     {
-        // 데모용 키 입력 (원하면 제거 가능)
-        if (Input.GetKeyDown(KeyCode.Space))  ChangeImage("Toggle_Hojakdo");
-        else if (Input.GetKeyDown(KeyCode.A)) ChangeImage("Show_Hojakdo_Image");
-        else if (Input.GetKeyDown(KeyCode.B)) ChangeImage("Play_Hojakdo_Video");
-        else if (Input.GetKeyDown(KeyCode.C)) ChangeImage("StopVideo");
-        else if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+        // // 데모용 키 입력 (원하면 제거 가능)
+        // if (Input.GetKeyDown(KeyCode.Space))  ChangeImage("Toggle_Hojakdo");
+        // else if (Input.GetKeyDown(KeyCode.A)) ChangeImage("Show_Hojakdo_Image");
+        // else if (Input.GetKeyDown(KeyCode.B)) ChangeImage("Play_Hojakdo_Video");
+        // else if (Input.GetKeyDown(KeyCode.C)) ChangeImage("StopVideo");
+        // else if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
     }
 
     public void ChangeImage(string message)
     {
+        Debug.Log($"[DisplayManager] ChangeImage received: {message}");
         switch (message)
         {
             case "Toggle_Hojakdo":
