@@ -19,7 +19,7 @@ public class TriggerController : MonoBehaviour
             Debug.LogWarning($"[TriggerController] BoxCollider missing or isTrigger=false on {name}");
 
         if (networkClient == null)
-            networkClient = FindObjectOfType<NetworkClient>();
+            networkClient = FindAnyObjectByType<NetworkClient>();
     }
 
     private void OnTriggerEnter(Collider other)

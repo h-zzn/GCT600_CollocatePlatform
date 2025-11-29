@@ -14,7 +14,7 @@ public class SurfaceTriggerController : MonoBehaviour
         col.isTrigger = true;
 
         if (networkClient == null)
-            networkClient = FindObjectOfType<NetworkClient>(); // 안전장치
+            networkClient = FindAnyObjectByType<NetworkClient>(); // 안전장치
     }
 
     private void OnTriggerEnter(Collider other)

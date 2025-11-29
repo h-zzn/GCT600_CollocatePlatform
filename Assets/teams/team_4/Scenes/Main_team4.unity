@@ -23750,8 +23750,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b705b80fcc479cb4095e0f85039e5466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bowlDummyPrefab: {fileID: 663699559372502245, guid: 3a7723ff55a5d7c4388fd2975456d535, type: 3}
-  spawnOffset: {x: 0, y: -0.1, z: 0}
+  bowlDummyPrefab: {fileID: 6498930355962425686, guid: c0eddc572f39c3d40baba1ca5658c7ac, type: 3}
+  spawnOffset: {x: -0.2, y: -0.1, z: 0}
 --- !u!114 &3463025878255048569
 MonoBehaviour:
   m_ObjectHideFlags: 0
