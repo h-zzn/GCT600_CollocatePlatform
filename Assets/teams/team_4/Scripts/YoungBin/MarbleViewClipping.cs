@@ -8,15 +8,24 @@ public class MarbleViewClipping : MonoBehaviour
     public GameObject marble;
     private Material marbleMaterial;
 
-    [Header("Bowl Settings")]
-    public float bowlRadius = 0.15f;
-    public float bowlDepth = 0.08f;
-    public float bowlWallHeight = 0.03f;
+    // Bowl settings - BowlController가 자동으로 설정
+    private float bowlRadius;
+    private float bowlDepth;
+    private float bowlWallHeight;
 
     [Header("Debug")]
     public bool showDebugGizmos = true;
 
     private float marbleRadius;
+
+    // 이 메서드 추가!
+    public void SetBowlDimensions(float radius, float depth, float wallHeight)
+    {
+        bowlRadius = radius;
+        bowlDepth = depth;
+        bowlWallHeight = wallHeight;
+        Debug.Log($"MarbleViewClipping: Bowl dimensions set - radius={radius}, depth={depth}, wallHeight={wallHeight}");
+    }
 
     void Start()
     {
@@ -25,8 +34,7 @@ public class MarbleViewClipping : MonoBehaviour
         Renderer renderer = marble.GetComponent<Renderer>();
         if (renderer != null)
         {
-            // IMPORTANT: Create material instance to avoid modifying the asset
-            marbleMaterial = renderer.material; // This automatically creates an instance
+            marbleMaterial = renderer.material;
             Debug.Log("Material found: " + marbleMaterial.name);
             Debug.Log("Material Shader: " + marbleMaterial.shader.name);
         }
@@ -53,15 +61,13 @@ public class MarbleViewClipping : MonoBehaviour
             return;
         }
 
-        // Pass information to shader - calculation happens in shader per-eye
         marbleMaterial.SetVector("_BowlCenter", bowl.position);
-        marbleMaterial.SetVector("_BowlUp", bowl.up);  // 그릇의 위쪽 방향 (회전 정보)
+        marbleMaterial.SetVector("_BowlUp", bowl.up);
         marbleMaterial.SetFloat("_BowlRadius", bowlRadius);
         marbleMaterial.SetFloat("_BowlDepth", bowlDepth);
         marbleMaterial.SetFloat("_BowlWallHeight", bowlWallHeight);
         marbleMaterial.SetFloat("_MarbleRadius", marbleRadius);
         
-        // Debug: 첫 프레임에만 출력
         if (Time.frameCount == 100)
         {
             Debug.Log($"Shader values - BowlCenter: {bowl.position}, BowlUp: {bowl.up}, Radius: {bowlRadius}, MarbleRadius: {marbleRadius}");
@@ -73,18 +79,15 @@ public class MarbleViewClipping : MonoBehaviour
     {
         if (!showDebugGizmos || bowl == null || marble == null) return;
 
-        float bowlRimY = bowl.position.y + bowlWallHeight;
-        float bowlBottomY = bowl.position.y - bowlDepth;
+        float bowlBottomY = bowl.position.y;  // pivot이 바닥
+        float bowlRimY = bowl.position.y + bowlDepth;  // rim이 위
 
-        // Bowl rim (노란색)
         Gizmos.color = Color.yellow;
         DrawCircle(new Vector3(bowl.position.x, bowlRimY, bowl.position.z), bowlRadius, Vector3.up);
 
-        // Bowl bottom (주황색) - 바닥 표시
         Gizmos.color = new Color(1f, 0.5f, 0f);
         DrawCircle(new Vector3(bowl.position.x, bowlBottomY, bowl.position.z), bowlRadius * 0.5f, Vector3.up);
 
-        // Bowl walls (반투명 노란색) - 벽 표시
         Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
         for (int i = 0; i < 8; i++)
         {
@@ -98,11 +101,9 @@ public class MarbleViewClipping : MonoBehaviour
 
         if (hmd != null && Application.isPlaying)
         {
-            // Camera to marble (blue)
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(hmd.position, marble.transform.position);
 
-            // Nearest rim point calculation
             Vector3 camToBowl2D = new Vector3(
                 bowl.position.x - hmd.position.x,
                 0,
@@ -118,17 +119,14 @@ public class MarbleViewClipping : MonoBehaviour
                     bowl.position.z - horizontalDir.z * bowlRadius
                 );
 
-                // Rim occlusion ray (cyan)
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawLine(hmd.position, nearestRimPoint);
                 Gizmos.DrawLine(nearestRimPoint, marble.transform.position);
 
-                // Rim point marker
                 Gizmos.color = Color.magenta;
                 Gizmos.DrawSphere(nearestRimPoint, 0.01f);
             }
 
-            // Marble (green)
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(marble.transform.position, marbleRadius);
         }
