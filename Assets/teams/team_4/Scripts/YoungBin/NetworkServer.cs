@@ -1,4 +1,5 @@
 using UnityEngine;
+using System; 
 using System.Net;
 using System.Net.Sockets;
 using System.Collections;
@@ -63,23 +64,37 @@ public class NetworkServer : MonoBehaviour
         Debug.Log("[Network Server] UDP Server stopped.");
     }
 
+    
     private void ReceiveData()
     {
         while (isRunning)
         {
             try
             {
-                
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
-
                 byte[] data = networkClient.Receive(ref anyIP);
-
+                
+                // 바이트 데이터 출력
+                string bytesHex = BitConverter.ToString(data);
+                Debug.Log($"[Network Server] Raw bytes: {bytesHex}");
+                
                 string message = Encoding.UTF8.GetString(data);
+                
+                Debug.Log($"[Network Server] === MESSAGE RECEIVED ===");
+                Debug.Log($"[Network Server] From: {anyIP.Address}:{anyIP.Port}");
+                Debug.Log($"[Network Server] Bytes length: {data.Length}");
+                Debug.Log($"[Network Server] Message: '{message}'");
+                Debug.Log($"[Network Server] Message length: {message.Length}");
+                
+                // 각 문자 출력
+                for (int i = 0; i < message.Length; i++)
+                {
+                    Debug.Log($"[Network Server] Char[{i}]: '{message[i]}' (code: {(int)message[i]})");
+                }
 
-                // 빈 메시지 무시
                 if (string.IsNullOrWhiteSpace(message))
                 {
-                    Debug.LogWarning($"[Network Server] Received empty message from {anyIP.Address}:{anyIP.Port}");
+                    Debug.LogWarning($"[Network Server] Empty message!");
                     continue;
                 }
 
@@ -87,24 +102,16 @@ public class NetworkServer : MonoBehaviour
                 {
                     receivedData = message;
                 }
-
-                Debug.Log($"[Network Server] Received message from Client({anyIP.Address}:{anyIP.Port}): {message}");
-
-            }
-            catch (SocketException e)
-            {
-                if (isRunning)
-                {
-                    Debug.LogError($"[Network Server] Socket Exception: {e.Message}");
-                }
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"[Network Server] Exception in ReceiveData thread: {e.Message}");
+                if (isRunning)
+                {
+                    Debug.LogError($"[Network Server] Exception: {e.Message}");
+                }
             }
         }
     }
-
     private void Update()
     {
         string currentData = null;
