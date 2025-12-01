@@ -93,8 +93,14 @@ public class AnimatedCharacterController : MonoBehaviour
         }
 
         // 다른 Mover들도 여기에 추가 가능
-        // var flowerMover = currentCharacter.GetComponent<FlowerMover>();
-        // if (flowerMover != null) { ... }
+        var butterflyMover = currentCharacter.GetComponent<ButterflyMover>();
+        if (butterflyMover != null)
+        {
+            butterflyMover.OnLastActionFinished += TryStartDecalProjection;
+            butterflyMover.StartMoving(tableAnchor, currentScreenAnchor);
+            Debug.Log("[AnimatedCharacterController] ButterflyMover started");
+            return;
+        }
     }
 
     private void SpawnPersonGroup(MRUKAnchor anchor)
