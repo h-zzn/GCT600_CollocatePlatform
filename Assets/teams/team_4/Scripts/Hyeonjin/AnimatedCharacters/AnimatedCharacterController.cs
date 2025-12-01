@@ -206,34 +206,35 @@ public class AnimatedCharacterController : MonoBehaviour
     }
 
     private void PlaceCharacterBehindScreen(GameObject obj)
-{
-    if (currentScreenAnchor == null)
     {
-        Debug.LogWarning("currentScreenAnchor missing");
-        return;
-    }
+        if (currentScreenAnchor == null)
+        {
+            Debug.LogWarning("currentScreenAnchor missing");
+            return;
+        }
 
-    // Screen의 UP 방향의 반대쪽 = 뒤쪽
-    Vector3 behindDirection = -currentScreenAnchor.transform.up;
-    
-    // Screen 위치에서 뒤쪽으로 distanceFromScreen만큼 이동
-    Vector3 pos = currentScreenAnchor.transform.position + (behindDirection * distanceFromScreen);
-    
-    // Y축은 바닥에 고정
-    pos.y = 0f;
-    
-    obj.transform.position = pos;
-    
-    // Tiger가 Screen을 바라보도록 회전 (up 방향 기준)
-    Vector3 lookDirection = currentScreenAnchor.transform.up;
-    lookDirection.y = 0;  // Y축 회전만
-    if (lookDirection != Vector3.zero)
-    {
-        obj.transform.rotation = Quaternion.LookRotation(lookDirection);
-    }
+        // Screen의 UP 방향의 반대쪽 = 뒤쪽
+        Vector3 behindDirection = -currentScreenAnchor.transform.up;
+        
+        // Screen 위치에서 뒤쪽으로 distanceFromScreen만큼 이동
+        Vector3 pos = currentScreenAnchor.transform.position + (behindDirection * distanceFromScreen);
+        
+        // Y축은 바닥에 고정
+        pos.y = 0f;
+        
+        obj.transform.position = pos;
+        
+        // Tiger가 Screen을 바라보도록 회전 (up 방향 기준)
+        Vector3 lookDirection = currentScreenAnchor.transform.up;
+        lookDirection.y = 0;  // Y축 회전만
+        
+        if (lookDirection != Vector3.zero)
+        {
+            obj.transform.rotation = Quaternion.LookRotation(lookDirection);
+        }
 
-    Debug.Log($"[PlaceCharacter] Screen pos: {currentScreenAnchor.transform.position}, " +
-              $"Screen up: {currentScreenAnchor.transform.up}, " +
-              $"Tiger placed at: {pos}");
+        Debug.Log($"[PlaceCharacter] Screen pos: {currentScreenAnchor.transform.position}, " +
+                $"Screen up: {currentScreenAnchor.transform.up}, " +
+                $"Tiger placed at: {pos}");
     }
 }
