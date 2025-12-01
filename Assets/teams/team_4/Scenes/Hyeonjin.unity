@@ -1628,8 +1628,8 @@ MonoBehaviour:
   flowerPrefab: {fileID: 5083505937172475603, guid: b0ea5794f3584274b8c3f1621ec05cb7, type: 3}
   personPrefabs:
   - {fileID: 21765920008759215, guid: 5e0dfdb029a93b74491d1c763ddb218c, type: 3}
-  - {fileID: 21765920008759215, guid: 5e0dfdb029a93b74491d1c763ddb218c, type: 3}
-  - {fileID: 21765920008759215, guid: 5e0dfdb029a93b74491d1c763ddb218c, type: 3}
+  - {fileID: 4031300319169971767, guid: 7741fa4e0d45c03479e60bff0aa01e70, type: 3}
+  - {fileID: 2463747351980455475, guid: 94d9c8ea862413045900970af0b853e7, type: 3}
   distanceFromScreen: 2
   fadeDuration: 2
   decalManager: {fileID: 910821744}
