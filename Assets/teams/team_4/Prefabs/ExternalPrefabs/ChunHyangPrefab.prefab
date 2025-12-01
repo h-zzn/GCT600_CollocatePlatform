@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 0}
-  firstWalkDistance: 5
+  firstWalkDistance: 2.5
   moveSpeed: 1
   stopDistance: 2
   fadeDuration: 2

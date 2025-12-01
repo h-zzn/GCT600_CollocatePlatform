@@ -1,6 +1,14 @@
 using UnityEngine;
 using Meta.XR.MRUtilityKit;
 
+[System.Serializable]
+public struct PersonSpawnOffset
+{
+    public Vector3 chunhyangOffset;
+    public Vector3 sattoOffset;
+    public Vector3 mongryongOffset;
+}
+
 public class AnimatedCharacterController : MonoBehaviour
 {
     [Header("Character Prefabs")] 
@@ -12,9 +20,14 @@ public class AnimatedCharacterController : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float distanceFromScreen = 2f;
+    [SerializeField] private float spawnOffsetValue = 2f;
     [SerializeField] private float fadeDuration = 2f;
 
     [SerializeField] private DecalManager decalManager;
+
+    [Header("Person First Target Offsets")]
+    [SerializeField] private PersonSpawnOffset personOffsets;
+
 
     private GameObject currentCharacter;      // 현재 생성된 캐릭터 Clone
     private MRUKAnchor currentScreenAnchor;
@@ -121,13 +134,13 @@ public class AnimatedCharacterController : MonoBehaviour
             return;
         }
 
-        // 3명 좌/중/우 offset
         Vector3[] offsets = new Vector3[]
         {
-            new Vector3(-0.5f, 0, 0),
-            Vector3.zero,
-            new Vector3(0.5f, 0, 0)
+            personOffsets.chunhyangOffset,
+            personOffsets.sattoOffset,
+            personOffsets.mongryongOffset
         };
+
 
         for (int i = 0; i < 3; i++)
         {

@@ -65,8 +65,10 @@ public class ChunhyangMover : MonoBehaviour
         targetPoint = tableAnchor.transform;
         this.screenAnchor = screenAnchor;
 
-        firstTargetPosition = screenAnchor.transform.position + 
+        // 기존 screen center 기준에서 앞쪽으로 firstWalkDistance 만큼 떨어진 지점 계산
+        firstTargetPosition = transform.position + 
                              (screenAnchor.transform.up * firstWalkDistance);
+
         firstTargetPosition.y = 0f;
 
         Debug.Log($"[ChunhyangMover] First target: {firstTargetPosition}");
