@@ -8857,6 +8857,10 @@ PrefabInstance:
       propertyPath: 'PrefabsToSpawn.Array.data[2].Prefabs.Array.data[0]'
       value: 
       objectReference: {fileID: 1905792406251565792, guid: 93b8ffa8f81a6c140a5407d610d85747, type: 3}
+    - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
+      propertyPath: 'PrefabsToSpawn.Array.data[2].Prefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1905792406251565792, guid: 3bd6f73ea0e8eb044b9fd69193e6ff11, type: 3}
     - target: {fileID: 91450107390678966, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
