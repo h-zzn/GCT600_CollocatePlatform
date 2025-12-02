@@ -11,7 +11,16 @@ public class GrassSequentialFader : MonoBehaviour
     public float fadeDuration = 2f;      // 한 패치가 0→1까지 올라가는 시간
     public float delayBetween = 0.3f;    // 패치들 사이 간격
 
+
     private void OnEnable()
+    {
+        StartFadeSequence();
+    }
+
+    /// <summary>
+    /// DecalManager 등 외부에서 호출하는 진입 함수
+    /// </summary>
+    public void StartFadeSequence()
     {
         // 시작할 때 모두 0으로 초기화
         if (grassRenderers != null)
@@ -19,10 +28,11 @@ public class GrassSequentialFader : MonoBehaviour
             foreach (var r in grassRenderers)
             {
                 if (r == null) continue;
-                r.SetPointLODFactor(0f);    // 내부에서 Clamp01 해줌
+                r.SetPointLODFactor(0f);    // 내부에서 Clamp01
             }
         }
 
+        StopAllCoroutines();
         StartCoroutine(FadeSequence());
     }
 

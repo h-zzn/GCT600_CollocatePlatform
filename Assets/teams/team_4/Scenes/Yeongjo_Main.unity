@@ -1658,8 +1658,13 @@ MonoBehaviour:
   flowerPrefab: {fileID: 5083505937172475603, guid: b0ea5794f3584274b8c3f1621ec05cb7, type: 3}
   personPrefabs: []
   distanceFromScreen: 2
+  spawnOffsetValue: 2
   fadeDuration: 2
   decalManager: {fileID: 910821744}
+  personOffsets:
+    chunhyangOffset: {x: 0, y: 0, z: 0}
+    sattoOffset: {x: 0, y: 0, z: 0}
+    mongryongOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &89340974
 Transform:
   m_ObjectHideFlags: 0
@@ -8722,7 +8727,7 @@ PrefabInstance:
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: 'PrefabsToSpawn.Array.data[0].Prefabs.Array.data[0]'
       value: 
-      objectReference: {fileID: 52264811415860543, guid: 9d064f6b7d01c424dad04ebbe8448439, type: 3}
+      objectReference: {fileID: 7492535381566586835, guid: cb86df4b1ca3435458d6aa78ab3de53f, type: 3}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: 'PrefabsToSpawn.Array.data[1].Prefabs.Array.data[0]'
       value: 
