@@ -49,6 +49,7 @@ public class DecalManager : MonoBehaviour
         proj.ProjectOnce();
         proj.PlayFadeIn();
 
+
         // 3) Tiger일 때만, 테이블 쪽 풀 페이드 시도
         if (type == DecalType.Tiger)
         {
@@ -58,6 +59,14 @@ public class DecalManager : MonoBehaviour
             {
                 Debug.Log("[DecalManager] Tiger decal → Table GrassAutoFaderOnDecal.StartFade 호출");
                 grassFader.StartFade();
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlaySFX3D(
+                        SoundID.GrassGrow,
+                        grassFader.transform.position
+                    );
+                }
+
             }
             else
             {
