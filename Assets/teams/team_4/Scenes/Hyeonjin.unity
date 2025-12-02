@@ -1634,9 +1634,9 @@ MonoBehaviour:
   fadeDuration: 2
   decalManager: {fileID: 910821744}
   personOffsets:
-    chunhyangOffset: {x: 1, y: 0, z: 0}
-    sattoOffset: {x: 2, y: 0, z: 1}
-    mongryongOffset: {x: 2, y: 0, z: 2}
+    chunhyangOffset: {x: 2, y: 0, z: 1}
+    sattoOffset: {x: 1, y: 0, z: 0}
+    mongryongOffset: {x: 1, y: 0, z: 2}
 --- !u!4 &89340974
 Transform:
   m_ObjectHideFlags: 0

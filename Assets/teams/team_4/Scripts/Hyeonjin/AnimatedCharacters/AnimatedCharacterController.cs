@@ -93,18 +93,6 @@ public class AnimatedCharacterController : MonoBehaviour
             return;
         }
 
-        // ChunhyangMover 체크
-        var chunhyangMover = currentCharacter.GetComponent<ChunhyangMover>();
-        if (chunhyangMover != null)
-        {
-            // Chunhyang은 decal projection 없음
-            chunhyangMover.OnLastActionFinished += TryStartDecalProjection;
-            // Screen 앵커도 함께 전달
-            chunhyangMover.StartMoving(tableAnchor, currentScreenAnchor);
-            Debug.Log("[AnimatedCharacterController] ChunhyangMover started");
-            return;
-        }
-
         // butterflyMover 체크
         var butterflyMover = currentCharacter.GetComponent<ButterflyMover>();
         if (butterflyMover != null)
@@ -153,12 +141,48 @@ public class AnimatedCharacterController : MonoBehaviour
             // Fade-in
             FadeUtility.Instance?.FadeIn(person, fadeDuration, 1f);
 
-            // mover 실행
-            var mover = person.GetComponent<ChunhyangMover>();
-            if (mover != null)
+            // 각 프리팹에 맞는 Mover 찾아서 실행
+            bool moverFound = false;
+
+            // ChunhyangMover 체크
+            var chunhyangMover = person.GetComponent<ChunhyangMover>();
+            if (chunhyangMover != null)
             {
-                mover.OnLastActionFinished += TryStartDecalProjection;
-                mover.StartMoving(tableAnchor, currentScreenAnchor);
+                chunhyangMover.OnLastActionFinished += TryStartDecalProjection;
+                chunhyangMover.StartMoving(tableAnchor, currentScreenAnchor);
+                Debug.Log($"[AnimatedCharacterController] ChunhyangMover started for person #{i+1}");
+                moverFound = true;
+            }
+
+            // SattoMover 체크
+            if (!moverFound)
+            {
+                var sattoMover = person.GetComponent<SattoMover>();
+                if (sattoMover != null)
+                {
+                    //sattoMover.OnLastActionFinished += TryStartDecalProjection;
+                    sattoMover.StartMoving(tableAnchor, currentScreenAnchor);
+                    Debug.Log($"[AnimatedCharacterController] SattoMover started for person #{i+1}");
+                    moverFound = true;
+                }
+            }
+
+            // MongryongMover 체크
+            if (!moverFound)
+            {
+                var mongryongMover = person.GetComponent<MongryongMover>();
+                if (mongryongMover != null)
+                {
+                    //mongryongMover.OnLastActionFinished += TryStartDecalProjection;
+                    mongryongMover.StartMoving(tableAnchor, currentScreenAnchor);
+                    Debug.Log($"[AnimatedCharacterController] MongryongMover started for person #{i+1}");
+                    moverFound = true;
+                }
+            }
+
+            if (!moverFound)
+            {
+                Debug.LogWarning($"[AnimatedCharacterController] No mover found for person #{i+1} ({personPrefabs[i].name})");
             }
 
             Debug.Log($"[AnimatedCharacterController] Spawned person #{i+1} ({personPrefabs[i].name})");

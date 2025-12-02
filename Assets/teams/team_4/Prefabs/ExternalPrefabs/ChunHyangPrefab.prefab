@@ -78,11 +78,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 0}
-  firstWalkDistance: 2.5
+  firstWalkDistance: 7
   moveSpeed: 1
   stopDistance: 2
   fadeDuration: 2
-  rotationSpeed: 1.5
+  rotationSpeed: 3
   finalWalkDuration: 1
 --- !u!1 &34442293527019838
 GameObject:
@@ -1056,8 +1056,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 4900461940490545177}
   m_AABB:
-    m_Center: {x: 0.16254094, y: 0.015140548, z: -0.0028696358}
-    m_Extent: {x: 0.4969981, y: 0.19770734, z: 0.3279953}
+    m_Center: {x: 0.16916072, y: 0.027475685, z: -0.0029758215}
+    m_Extent: {x: 0.5036179, y: 0.20186584, z: 0.32014853}
   m_DirtyAABB: 0
 --- !u!183 &6215077943980657526
 Cloth:

@@ -6327,7 +6327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5445793472970428921}
   - component: {fileID: 2411517023303171271}
-  - component: {fileID: 5269262771565381932}
+  - component: {fileID: 5559026006622190953}
   m_Layer: 0
   m_Name: MongRyongPrefab
   m_TagString: Untagged
@@ -6370,7 +6370,7 @@ Animator:
   m_GameObject: {fileID: 2463747351980455475}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: c03632ca381d6c645b764d91b90236a1, type: 3}
-  m_Controller: {fileID: 9100000, guid: 4a797c14a357df04e9f7b4634be251e3, type: 2}
+  m_Controller: {fileID: 9100000, guid: e483c8ea1be919b49addf4531cfc79a8, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -6382,7 +6382,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5269262771565381932
+--- !u!114 &5559026006622190953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6391,16 +6391,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2463747351980455475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d80d5cabb545b124aba73aeb23863e89, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f80534a86b812c49818184e031b08a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 0}
   firstWalkDistance: 6
-  moveSpeed: 1.5
-  stopDistance: 0.3
-  fadeDuration: 2
-  rotationSpeed: 5
-  finalWalkDuration: 3
+  moveSpeed: 1
+  stopDistance: 1
+  fadeDuration: 1
+  rotationSpeed: 3
+  finalWalkDuration: 1
 --- !u!1 &2571474686480261717
 GameObject:
   m_ObjectHideFlags: 0

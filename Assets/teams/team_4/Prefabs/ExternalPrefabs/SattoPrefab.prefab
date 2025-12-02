@@ -8700,7 +8700,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3402143157416986883}
   - component: {fileID: 250587076432447480}
-  - component: {fileID: 4330115029778076188}
+  - component: {fileID: 7514985173587810271}
   m_Layer: 0
   m_Name: SattoPrefab
   m_TagString: Untagged
@@ -8744,7 +8744,7 @@ Animator:
   m_GameObject: {fileID: 4031300319169971767}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 955ffa02bcda250488bc68f28a8cedd6, type: 3}
-  m_Controller: {fileID: 9100000, guid: 4a797c14a357df04e9f7b4634be251e3, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4b7ab76dcc197af4aaf99c380b1f08a2, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -8756,7 +8756,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4330115029778076188
+--- !u!114 &7514985173587810271
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8765,16 +8765,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4031300319169971767}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d80d5cabb545b124aba73aeb23863e89, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e60bc95da342f343baa4463b702bf3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 0}
   firstWalkDistance: 6
-  moveSpeed: 1.5
-  stopDistance: 0.3
-  fadeDuration: 2
-  rotationSpeed: 5
-  finalWalkDuration: 3
+  moveSpeed: 1
+  stopDistance: 1
+  fadeDuration: 1
+  rotationSpeed: 3
+  finalWalkDuration: 1
 --- !u!1 &4053092049743018777
 GameObject:
   m_ObjectHideFlags: 0

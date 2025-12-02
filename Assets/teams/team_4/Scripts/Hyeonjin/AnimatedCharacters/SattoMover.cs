@@ -2,7 +2,8 @@ using UnityEngine;
 using Meta.XR.MRUtilityKit;
 using System;
 
-public class ChunhyangMover : MonoBehaviour
+
+public class SattoMover : MonoBehaviour
 {
     [Header("Movement Settings")]
     public Transform targetPoint;
@@ -22,7 +23,7 @@ public class ChunhyangMover : MonoBehaviour
     private Transform mainCamera;
     private Quaternion savedRotation;
 
-    private bool greetingCompleted = false;
+    private bool talkingCompleted = false;
     private float finalWalkStartTime = 0f;
     private bool rotationCallbackExecuted = false;
 
@@ -32,12 +33,12 @@ public class ChunhyangMover : MonoBehaviour
         FirstWalking,
         StandingStill1,
         RotatingToCamera1,
-        FirstGreeting,
+        FirstTalking,
         RotatingToTable,   
         SecondWalking,
         StandingStill2,
         RotatingToCamera2,
-        FinalGreeting,
+        FinalTalking,
         RotatingBack2,      
         FinalWalking
     }
@@ -54,13 +55,13 @@ public class ChunhyangMover : MonoBehaviour
     {
         if (tableAnchor == null)
         {
-            Debug.LogError("[ChunhyangMover] StartMoving: tableAnchor is NULL");
+            Debug.LogError("[SattoMover] StartMoving: tableAnchor is NULL");
             return;
         }
 
         if (screenAnchor == null)
         {
-            Debug.LogError("[ChunhyangMover] StartMoving: screenAnchor is NULL");
+            Debug.LogError("[SattoMover] StartMoving: screenAnchor is NULL");
             return;
         }
 
@@ -73,16 +74,17 @@ public class ChunhyangMover : MonoBehaviour
 
         firstTargetPosition.y = 0f;
 
-        Debug.Log($"[ChunhyangMover] First target: {firstTargetPosition}");
-        Debug.Log($"[ChunhyangMover] Final target (Table): {tableAnchor.name}");
+        Debug.Log($"[SattoMover] First target: {firstTargetPosition}");
+        Debug.Log($"[SattoMover] Final target (Table): {tableAnchor.name}");
 
         currentState = State.StandingIdle;
     }
 
     private void Update()
     {
-        if (targetPoint == null) return;
-
+        if (targetPoint == null)
+            return;
+        
         switch (currentState)
         {
             case State.StandingIdle:
@@ -97,20 +99,20 @@ public class ChunhyangMover : MonoBehaviour
                 CheckStandingStill("Standing Idle 0", () => {
                     rotationCallbackExecuted = false;
                     currentState = State.RotatingToCamera1;
-                    Debug.Log("[ChunhyangMover] StandingStill1 (Standing Idle 0) → RotatingToCamera1");
+                    Debug.Log("[SattoMover] StandingStill1 (Standing Idle 0) → RotatingToCamera1");
                 });
                 break;
 
             case State.RotatingToCamera1:
                 RotateToCamera(() => {
-                    currentState = State.FirstGreeting;
-                    greetingCompleted = false;
-                    animator.SetTrigger("greet");
+                    currentState = State.FirstTalking;
+                    talkingCompleted = false;
+                    animator.SetTrigger("talk");
                 });
                 break;
 
-            case State.FirstGreeting:
-                CheckFirstGreetingEnd();
+            case State.FirstTalking:
+                CheckFirstTalkingEnd();
                 break;
 
             // Table 방향으로 회전
@@ -118,7 +120,7 @@ public class ChunhyangMover : MonoBehaviour
                 RotateToTable(() => {
                     animator.SetBool("isWalking", true);
                     currentState = State.SecondWalking;
-                    Debug.Log("[ChunhyangMover] Rotation to table complete → SecondWalking");
+                    Debug.Log("[SattoMover] Rotation to table complete → SecondWalking");
                 });
                 break;
 
@@ -130,20 +132,20 @@ public class ChunhyangMover : MonoBehaviour
                 CheckStandingStill("Standing Idle 1", () => {
                     rotationCallbackExecuted = false;
                     currentState = State.RotatingToCamera2;
-                    Debug.Log("[ChunhyangMover] StandingStill2 (Standing Idle 1) → RotatingToCamera2");
+                    Debug.Log("[SattoMover] StandingStill2 (Standing Idle 1) → RotatingToCamera2");
                 });
                 break;
 
             case State.RotatingToCamera2:
                 RotateToCamera(() => {
-                    currentState = State.FinalGreeting;
-                    greetingCompleted = false;
-                    animator.SetTrigger("greet");
+                    currentState = State.FinalTalking;
+                    talkingCompleted = false;
+                    animator.SetTrigger("talk");
                 });
                 break;
 
-            case State.FinalGreeting:
-                CheckFinalGreetingEnd();
+            case State.FinalTalking:
+                CheckFinalTalkingEnd();
                 break;
 
             // 원래 방향으로 회전
@@ -152,7 +154,7 @@ public class ChunhyangMover : MonoBehaviour
                     animator.SetBool("isWalking", true);
                     finalWalkStartTime = Time.time;
                     currentState = State.FinalWalking;
-                    Debug.Log("[ChunhyangMover] Rotation back complete → FinalWalking (Fading out)");
+                    Debug.Log("[SattoMover] Rotation back complete → FinalWalking (Fading out)");
                 });
                 break;
 
@@ -171,7 +173,7 @@ public class ChunhyangMover : MonoBehaviour
             {
                 animator.SetBool("isWalking", true);
                 currentState = State.FirstWalking;
-                Debug.Log("[ChunhyangMover] State: StandingIdle → FirstWalking");
+                Debug.Log("[SattoMover] State: StandingIdle → FirstWalking");
             }
         }
     }
@@ -210,24 +212,24 @@ public class ChunhyangMover : MonoBehaviour
             savedRotation = transform.rotation;  // 현재 방향 저장
             rotationCallbackExecuted = false;
             currentState = State.StandingStill1;
-            Debug.Log("[ChunhyangMover] Reached first target → StandingStill1");
+            Debug.Log("[SattoMover] Reached first target → StandingStill1");
         }
     }
 
-    private void CheckFirstGreetingEnd()
+    private void CheckFirstTalkingEnd()
     {
-        if (IsInState("Standing Greeting"))
+        if (IsInState("Talking"))
         {
-            if (!greetingCompleted)
+            if (!talkingCompleted)
             {
                 AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
                 if (stateInfo.normalizedTime >= 0.95f && !animator.IsInTransition(0))
                 {
-                    greetingCompleted = true;
+                    talkingCompleted = true;
                     rotationCallbackExecuted = false;
                     // Table 방향으로 회전하도록 변경
                     currentState = State.RotatingToTable;
-                    Debug.Log("[ChunhyangMover] FirstGreeting end → RotatingToTable");
+                    Debug.Log("[SattoMover] FirstTalking end → RotatingToTable");
                 }
             }
         }
@@ -255,24 +257,24 @@ public class ChunhyangMover : MonoBehaviour
             savedRotation = transform.rotation;  // Table 도착 시 방향 저장
             rotationCallbackExecuted = false;
             currentState = State.StandingStill2;
-            Debug.Log("[ChunhyangMover] Reached Table → StandingStill2");
+            Debug.Log("[SattoMover] Reached Table → StandingStill2");
         }
     }
 
-    private void CheckFinalGreetingEnd()
+    private void CheckFinalTalkingEnd()
     {
-        if (IsInState("Standing Greeting 0"))
+        if (IsInState("Talking 0"))
         {
-            if (!greetingCompleted)
+            if (!talkingCompleted)
             {
                 AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
                 if (stateInfo.normalizedTime >= 0.95f && !animator.IsInTransition(0))
                 {
-                    greetingCompleted = true;
+                    talkingCompleted = true;
                     rotationCallbackExecuted = false;
                     // 원래 방향으로 회전하도록 변경
                     currentState = State.RotatingBack2;
-                    Debug.Log("[ChunhyangMover] FinalGreeting end → RotatingBack2");
+                    Debug.Log("[SattoMover] FinalTalking end → RotatingBack2");
                 }
             }
         }
@@ -288,7 +290,7 @@ public class ChunhyangMover : MonoBehaviour
 
         if (Time.time - finalWalkStartTime >= finalWalkDuration)
         {
-            Debug.Log("[ChunhyangMover] Final walking complete!");
+            Debug.Log("[SattoMover] Final walking complete!");
             OnLastActionFinished?.Invoke();
             FadeUtility.Instance?.FadeOutOpaque(gameObject, fadeDuration, 0f);
             Destroy(gameObject, fadeDuration);
@@ -357,7 +359,7 @@ public class ChunhyangMover : MonoBehaviour
             transform.rotation = targetRotation;
             rotationCallbackExecuted = true;
             onComplete?.Invoke();
-            Debug.Log("[ChunhyangMover] Rotation to camera complete");
+            Debug.Log("[SattoMover] Rotation to camera complete");
         }
     }
 
@@ -370,7 +372,7 @@ public class ChunhyangMover : MonoBehaviour
             transform.rotation = savedRotation;
             rotationCallbackExecuted = true;
             onComplete?.Invoke();
-            Debug.Log("[ChunhyangMover] Rotation back complete");
+            Debug.Log("[SattoMover] Rotation back complete");
         }
     }
 
@@ -378,4 +380,5 @@ public class ChunhyangMover : MonoBehaviour
     {
         return animator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
     }
+
 }
