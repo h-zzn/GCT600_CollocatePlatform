@@ -38,6 +38,7 @@ public class ButterflyMover : MonoBehaviour
         CirclingCamera,
         MovingToTable,
         CirclingTable,
+        FinalForwardMove,
         Complete
     }
 
@@ -99,6 +100,10 @@ public class ButterflyMover : MonoBehaviour
 
             case State.CirclingTable:
                 CircleAround(tableAnchor.position);
+                break;
+
+            case State.FinalForwardMove:
+                FinalForwardMove();
                 break;
         }
     }
@@ -232,13 +237,11 @@ public class ButterflyMover : MonoBehaviour
             }
             else if (currentState == State.CirclingTable)
             {
-                currentState = State.Complete;
-                Debug.Log("[ButterflyMover] Table circle complete!");
-                OnLastActionFinished?.Invoke();
-                
-                FadeUtility.Instance?.FadeOutOpaque(gameObject, fadeDuration, 0f);
-                Destroy(gameObject, fadeDuration);
+                Debug.Log("[ButterflyMover] Table circle complete → FinalForwardMove");
+                currentState = State.FinalForwardMove;   // 다음 단계로 이동
+                stateTimer = 0f; // forward 이동 시간 측정용
             }
+
         }
     }
 
@@ -285,6 +288,30 @@ public class ButterflyMover : MonoBehaviour
             Debug.Log($"[ButterflyMover] Circling table (start: {circleAngle:F1}°)");
         }
     }
+
+    private void FinalForwardMove()
+    {
+        float duration = 1.5f; // 앞으로 날아가는 시간 (원하는 값으로 조절)
+
+        // 앞으로 이동
+        transform.position += transform.forward * moveSpeed * Time.deltaTime;
+
+        // fade-out 시작 (한 번만 호출)
+        if (stateTimer == 0f)
+        {
+            OnLastActionFinished?.Invoke();
+            FadeUtility.Instance?.FadeOutOpaque(gameObject, fadeDuration, 0f);
+        }
+
+        stateTimer += Time.deltaTime;
+
+        if (stateTimer >= duration)
+        {
+            currentState = State.Complete;
+            Destroy(gameObject, fadeDuration); // fadeDuration 뒤 삭제
+        }
+    }
+
 
     private void OnDrawGizmos()
     {
