@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.58, y: 0.58, z: 0.58}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4192380478989206947}
@@ -78,9 +78,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 0}
-  firstWalkDistance: 7
+  firstWalkDistance: -7
   moveSpeed: 1
-  stopDistance: 2
+  stopDistance: 1
   fadeDuration: 2
   rotationSpeed: 3
   finalWalkDuration: 1
@@ -1056,8 +1056,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 4900461940490545177}
   m_AABB:
-    m_Center: {x: 0.16916072, y: 0.027475685, z: -0.0029758215}
-    m_Extent: {x: 0.5036179, y: 0.20186584, z: 0.32014853}
+    m_Center: {x: 0.16839087, y: 0.022885948, z: -0.0038476288}
+    m_Extent: {x: 0.50284797, y: 0.2003452, z: 0.3218321}
   m_DirtyAABB: 0
 --- !u!183 &6215077943980657526
 Cloth:

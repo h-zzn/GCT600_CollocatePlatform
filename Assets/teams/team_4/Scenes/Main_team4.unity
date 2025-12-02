@@ -489,8 +489,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screenNames:
-  - Tiger
   - Flower
+  - Tiger
   - Person
 --- !u!1 &32580701
 GameObject:
@@ -1665,9 +1665,9 @@ MonoBehaviour:
   fadeDuration: 2
   decalManager: {fileID: 910821744}
   personOffsets:
-    chunhyangOffset: {x: 2, y: 0, z: 1}
-    sattoOffset: {x: 1, y: 0, z: 0}
-    mongryongOffset: {x: 1, y: 0, z: 2}
+    chunhyangOffset: {x: -2, y: 0, z: 1}
+    sattoOffset: {x: -1, y: 0, z: 0}
+    mongryongOffset: {x: -1, y: 0, z: 2}
 --- !u!4 &89340974
 Transform:
   m_ObjectHideFlags: 0
@@ -8778,7 +8778,7 @@ PrefabInstance:
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: 'PrefabsToSpawn.Array.data[0].Prefabs.Array.data[0]'
       value: 
-      objectReference: {fileID: 52264811415860543, guid: 9d064f6b7d01c424dad04ebbe8448439, type: 3}
+      objectReference: {fileID: 7492535381566586835, guid: cb86df4b1ca3435458d6aa78ab3de53f, type: 3}
     - target: {fileID: 91450107390678965, guid: 0c23e50f33ad151479c690a0e4a5320e, type: 3}
       propertyPath: 'PrefabsToSpawn.Array.data[1].Prefabs.Array.data[0]'
       value: 
