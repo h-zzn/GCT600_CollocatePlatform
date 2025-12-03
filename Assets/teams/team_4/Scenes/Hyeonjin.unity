@@ -1637,6 +1637,8 @@ MonoBehaviour:
     chunhyangOffset: {x: 2, y: 0, z: 1}
     sattoOffset: {x: 1, y: 0, z: 0}
     mongryongOffset: {x: 1, y: 0, z: 2}
+  tigerOffset: {x: -2, y: 0, z: 0}
+  butterflyOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &89340974
 Transform:
   m_ObjectHideFlags: 0

@@ -28,6 +28,11 @@ public class AnimatedCharacterController : MonoBehaviour
     [Header("Person First Target Offsets")]
     [SerializeField] private PersonSpawnOffset personOffsets;
 
+    [Header("Tiger / Butterfly First Target Offset")]
+    [SerializeField] private Vector3 tigerOffset = Vector3.zero;
+    [SerializeField] private Vector3 butterflyOffset = Vector3.zero;
+
+
 
     private GameObject currentCharacter;      // 현재 생성된 캐릭터 Clone
     private MRUKAnchor currentScreenAnchor;
@@ -56,30 +61,17 @@ public class AnimatedCharacterController : MonoBehaviour
     // 캐릭터 스폰 공통 함수
     private void SpawnCharacter(GameObject prefab, MRUKAnchor anchor)
     {
-        // 기존 캐릭터가 존재했다면 제거
         if (currentCharacter != null)
             Destroy(currentCharacter);
 
         currentScreenAnchor = anchor;
-
-        // Clone 생성
         currentCharacter = Instantiate(prefab);
 
-        // 배치
-        PlaceCharacterBehindScreen(currentCharacter);
-
-        // 등장 연출
-        FadeUtility.Instance?.FadeIn(currentCharacter, fadeDuration, 1f);
-
         // TABLE 앵커 가져오기
-        MRUKAnchor tableAnchor = null;
-        if (MRUKManager.Instance != null && MRUKManager.Instance.TableAnchor != null)
+        MRUKAnchor tableAnchor = MRUKManager.Instance.TableAnchor;
+        if (tableAnchor == null)
         {
-            tableAnchor = MRUKManager.Instance.TableAnchor;
-        }
-        else
-        {
-            Debug.LogError("[AnimatedCharacterController] TABLE anchor not found in MRUKManager!");
+            Debug.LogError("[AnimatedCharacterController] TABLE anchor not found!");
             return;
         }
 
@@ -87,22 +79,37 @@ public class AnimatedCharacterController : MonoBehaviour
         var tigerMover = currentCharacter.GetComponent<TigerMover>();
         if (tigerMover != null)
         {
+            // Tiger 오프셋 적용
+            PlaceCharacterBehindScreenWithOffset(currentCharacter, tigerOffset);
+            FadeUtility.Instance?.FadeIn(currentCharacter, fadeDuration, 1f);
+
             tigerMover.OnLastJumpFinished += TryStartDecalProjection;
             tigerMover.StartMoving(tableAnchor);
+
             Debug.Log("[AnimatedCharacterController] TigerMover started");
             return;
         }
 
-        // butterflyMover 체크
+        // ButterflyMover 체크
         var butterflyMover = currentCharacter.GetComponent<ButterflyMover>();
         if (butterflyMover != null)
         {
+            // Butterfly 오프셋 적용
+            PlaceCharacterBehindScreenWithOffset(currentCharacter, butterflyOffset);
+            FadeUtility.Instance?.FadeIn(currentCharacter, fadeDuration, 1f);
+
             butterflyMover.OnLastActionFinished += TryStartDecalProjection;
             butterflyMover.StartMoving(tableAnchor, currentScreenAnchor);
+
             Debug.Log("[AnimatedCharacterController] ButterflyMover started");
             return;
         }
+
+        // fallback (혹시 mover 없는 prefab일 경우)
+        PlaceCharacterBehindScreen(currentCharacter);
+        FadeUtility.Instance?.FadeIn(currentCharacter, fadeDuration, 1f);
     }
+
 
     private void SpawnPersonGroup(MRUKAnchor anchor)
     {
