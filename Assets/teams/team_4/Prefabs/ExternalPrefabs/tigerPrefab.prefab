@@ -801,7 +801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 0}
-  moveSpeed: 1
+  moveSpeed: 0.8
   stopDistance: 2
   fadeDuration: 0.8
 --- !u!1 &3989184835061150133

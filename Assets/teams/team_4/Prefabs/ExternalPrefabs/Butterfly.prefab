@@ -462,7 +462,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 455730}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.000010245283, y: 90, z: -90}
 --- !u!33 &3313848
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -647,11 +647,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbad2ccc31a9b340957d89c431274c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 0.8
   distanceFromScreen: 1
   hoveringDuration: 3
   circleRadius: 0.8
-  circleSpeed: 80
+  circleSpeed: 50
   circleHeight: 1.5
   fadeDuration: 1
 --- !u!1 &138564
@@ -772,7 +772,7 @@ Transform:
   - {fileID: 438454}
   - {fileID: 493954}
   m_Father: {fileID: 4512588687948914255}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 64.99999, y: -14.999981, z: -89.99998}
 --- !u!1 &144926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1665,7 +1665,7 @@ Transform:
   - {fileID: 480818}
   - {fileID: 478954}
   m_Father: {fileID: 4512588687948914255}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -60.000027, y: -19.999908, z: -90.00011}
 --- !u!1 &186998
 GameObject:
   m_ObjectHideFlags: 0
