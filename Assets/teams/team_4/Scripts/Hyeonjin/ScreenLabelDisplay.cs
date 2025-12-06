@@ -17,8 +17,8 @@ public class ScreenLabelDisplay : MonoBehaviour
     private Dictionary<string, string> screenLabelMap = new Dictionary<string, string>()
     {
         { "SCREEN_Tiger", "Hojak-do" },
-        { "SCREEN_Person", "Chochung-do" },
-        { "SCREEN_Flower", "Pyungan-do" }
+        { "SCREEN_Person", "Pyungan-do" },
+        { "SCREEN_Flower", "Chochung-do" }
     };
 
     private MRUKAnchor assignedScreen;
