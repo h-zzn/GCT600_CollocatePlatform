@@ -9,13 +9,20 @@ public struct PersonSpawnOffset
     public Vector3 mongryongOffset;
 }
 
+[System.Serializable]
+public struct ButterflySpawnOffset
+{
+    public Vector3 butterfly1Offset;
+    public Vector3 butterfly2Offset;
+    public Vector3 butterfly3Offset;
+}
+
 public class AnimatedCharacterController : MonoBehaviour
 {
     [Header("Character Prefabs")] 
     [SerializeField] private GameObject tigerPrefab;
-    [SerializeField] private GameObject flowerPrefab;
-    [Header("Person Prefabs")]
-    [SerializeField] private GameObject[] personPrefabs;   // ★ 기존 personPrefab 삭제
+    [SerializeField] private GameObject[] flowerPrefabs;
+    [SerializeField] private GameObject[] personPrefabs;   
 
 
     [Header("Settings")]
@@ -25,12 +32,15 @@ public class AnimatedCharacterController : MonoBehaviour
 
     [SerializeField] private DecalManager decalManager;
 
+    [Header("Butterfly Target Offsets")]
+    [SerializeField] private ButterflySpawnOffset butterflyOffsets;
+
     [Header("Person First Target Offsets")]
     [SerializeField] private PersonSpawnOffset personOffsets;
 
     [Header("Tiger / Butterfly First Target Offset")]
     [SerializeField] private Vector3 tigerOffset = Vector3.zero;
-    [SerializeField] private Vector3 butterflyOffset = Vector3.zero;
+    // [SerializeField] private Vector3 butterflyOffset = Vector3.zero;
 
 
 
@@ -59,7 +69,7 @@ public class AnimatedCharacterController : MonoBehaviour
     }
 
     // 캐릭터 스폰 공통 함수
-    private void SpawnCharacter(GameObject prefab, MRUKAnchor anchor)
+    private void SpawnTiger(GameObject prefab, MRUKAnchor anchor)
     {
         if (currentCharacter != null)
             Destroy(currentCharacter);
@@ -89,26 +99,51 @@ public class AnimatedCharacterController : MonoBehaviour
             Debug.Log("[AnimatedCharacterController] TigerMover started");
             return;
         }
-
-        // ButterflyMover 체크
-        var butterflyMover = currentCharacter.GetComponent<ButterflyMover>();
-        if (butterflyMover != null)
-        {
-            // Butterfly 오프셋 적용
-            PlaceCharacterBehindScreenWithOffset(currentCharacter, butterflyOffset);
-            FadeUtility.Instance?.FadeIn(currentCharacter, fadeDuration, 1f);
-
-            butterflyMover.OnLastActionFinished += TryStartDecalProjection;
-            butterflyMover.StartMoving(tableAnchor, currentScreenAnchor);
-
-            Debug.Log("[AnimatedCharacterController] ButterflyMover started");
-            return;
-        }
-
         // fallback (혹시 mover 없는 prefab일 경우)
         PlaceCharacterBehindScreen(currentCharacter);
         FadeUtility.Instance?.FadeIn(currentCharacter, fadeDuration, 1f);
     }
+
+    private void SpawnFlowerGroup(MRUKAnchor anchor)
+    {
+        currentScreenAnchor = anchor;
+
+        MRUKAnchor tableAnchor = MRUKManager.Instance.TableAnchor;
+        if (tableAnchor == null)
+        {
+            Debug.LogError("[AnimatedCharacterController] TABLE anchor not found!");
+            return;
+        }
+
+        // flower offset 배열도 준비 가능
+        Vector3[] offsets = new Vector3[]
+        {
+            butterflyOffsets.butterfly1Offset,
+            butterflyOffsets.butterfly2Offset,
+            butterflyOffsets.butterfly3Offset,
+        };
+
+        for (int i = 0; i < flowerPrefabs.Length; i++)
+        {
+            GameObject flower = Instantiate(flowerPrefabs[i]);
+            
+            // 위치 배치
+            PlaceCharacterBehindScreenWithOffset(flower, offsets[i % offsets.Length]);
+
+            // fade
+            FadeUtility.Instance?.FadeIn(flower, fadeDuration, 1f);
+
+            // mover 실행
+            var mover = flower.GetComponent<ButterflyMover>();
+            if (mover != null)
+            {
+                mover.StartMoving(tableAnchor, currentScreenAnchor);
+            }
+
+            Debug.Log($"Spawned flower #{i + 1}");
+        }
+    }
+
 
 
     private void SpawnPersonGroup(MRUKAnchor anchor)
@@ -245,15 +280,16 @@ public class AnimatedCharacterController : MonoBehaviour
     public void AppearTiger(MRUKAnchor anchor)
     {
         currentDecalType = DecalType.Tiger;
-        SpawnCharacter(tigerPrefab, anchor);
+        SpawnTiger(tigerPrefab, anchor);
     }
 
     // Flower 호출
     public void AppearFlower(MRUKAnchor anchor)
     {
         currentDecalType = DecalType.Flower;
-        SpawnCharacter(flowerPrefab, anchor);
+        SpawnFlowerGroup(anchor);
     }
+
 
     // Person 호출
     public void AppearPerson(MRUKAnchor anchor)

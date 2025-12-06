@@ -67,7 +67,7 @@ public class ButterflyMover : MonoBehaviour
         this.screenAnchor = screenAnchor;
 
         targetPosition = screenAnchor.transform.position + 
-                        (screenAnchor.transform.up * distanceFromScreen);
+                        (screenAnchor.transform.right * distanceFromScreen);
         targetPosition.y = circleHeight;
 
         Debug.Log($"[ButterflyMover] Started! Target position: {targetPosition}");
