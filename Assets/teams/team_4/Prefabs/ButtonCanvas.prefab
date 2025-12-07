@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 3552956547210739054}
   - component: {fileID: 5414770638136056780}
   - component: {fileID: 3871034393552657499}
+  - component: {fileID: 4050130901041999636}
   m_Layer: 0
   m_Name: TextTileButton_IconAndLabel_Regular_UnityUIButton
   m_TagString: QDSUIToggleButton
@@ -306,7 +307,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -72}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5414770638136056780
@@ -353,17 +354,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 7311418350199179525, guid: b0ea5794f3584274b8c3f1621ec05cb7, type: 3}
+        m_TargetAssemblyTypeName: ButtonTest, Assembly-CSharp
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!95 &3871034393552657499
 Animator:
@@ -387,6 +388,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &4050130901041999636
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2863619115807907326}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 95.1131, y: 76.15127, z: 24.182125}
+  m_Center: {x: 1.6369088, y: -0.62685436, z: 2.018643}
 --- !u!1 &3647463079285608458
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,6 +590,7 @@ GameObject:
   - component: {fileID: 5270348689551531298}
   - component: {fileID: 8098676903915452379}
   - component: {fileID: 8633586711945221899}
+  - component: {fileID: 2322350176781144760}
   m_Layer: 5
   m_Name: ButtonCanvas
   m_TagString: Untagged
@@ -672,19 +695,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   labelText: {fileID: 2790731370104405949}
-  displayButton: {fileID: 0}
   maxWaitTime: 3
   checkInterval: 0.2
-  screenMappings:
-  - screenID: SCREEN_Tiger
-    labelText: Hojak-do
-    displayImage: {fileID: 0}
-  - screenID: SCREEN_Person
-    labelText: Chochung-do
-    displayImage: {fileID: 0}
-  - screenID: SCREEN_Flower
-    labelText: Pyungan-do
-    displayImage: {fileID: 0}
+--- !u!114 &2322350176781144760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8129983311126585787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe3cda3e244f60419474164d6ba3b0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_MaxDistance: 1000
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &8428284453586539753
 GameObject:
   m_ObjectHideFlags: 0
