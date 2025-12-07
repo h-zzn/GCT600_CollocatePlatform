@@ -22,12 +22,12 @@ public class ScreenLabelDisplay : MonoBehaviour
 
     [Header("Canvas Spawn Settings")]
     [SerializeField] private float canvasDistance = 0.8f; // 스크린으로부터의 거리
-    [SerializeField] private Vector3 canvasOffset = Vector3.zero;
+    //[SerializeField] private Vector3 canvasOffset = Vector3.zero;
 
     [Header("Canvas Spawn Settings")]
     [SerializeField] private float canvasDistanceRight = 0.5f; // 오른쪽으로 얼마나 떨어뜨릴지
     [SerializeField] private float canvasDistanceFront = 0.3f; // 앞으로 얼마나 띄울지
-    [SerializeField] private Vector3 canvasScale = new Vector3(0.0008f, 0.0008f, 0.0008f); // Canvas 크기
+    //[SerializeField] private Vector3 canvasScale = new Vector3(0.0008f, 0.0008f, 0.0008f); // Canvas 크기
 
     // ScreenID → Label 매핑
     private Dictionary<string, string> screenLabelMap = new Dictionary<string, string>()
@@ -112,7 +112,7 @@ public class ScreenLabelDisplay : MonoBehaviour
                 // Canvas 인스턴스 생성
                 currentActiveCanvas = Instantiate(canvasPrefab);
                 
-                // ★ Screen의 오른쪽 위치 계산
+                // Screen의 오른쪽 위치 계산
                 Vector3 rightOffset = assignedScreen.transform.right * canvasDistanceRight;
                 Vector3 frontOffset = assignedScreen.transform.up * canvasDistanceFront;
                 
@@ -120,8 +120,12 @@ public class ScreenLabelDisplay : MonoBehaviour
                 
                 currentActiveCanvas.transform.position = spawnPosition;
                 
-                // Canvas가 Screen을 향하도록 회전 (Screen과 같은 방향)
-                // currentActiveCanvas.transform.rotation = assignedScreen.transform.rotation;
+                // ★ Screen의 up 방향을 바라보도록 회전
+                currentActiveCanvas.transform.rotation = Quaternion.LookRotation(assignedScreen.transform.up);
+                
+                // Canvas 크기 조정 (작게)
+                // currentActiveCanvas.transform.localScale = canvasScale;
+                
                 Debug.Log($"[ScreenLabelDisplay] Opened content canvas for {screenID} at {spawnPosition}");
             }
             else

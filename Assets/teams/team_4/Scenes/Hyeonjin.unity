@@ -1040,7 +1040,7 @@ Transform:
   m_GameObject: {fileID: 56263344}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: -9.829993, y: 0, z: -2.2000005}
+  m_LocalPosition: {x: -9.829993, y: 0, z: -3.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -22115,7 +22115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiPrefab: {fileID: 8129983311126585787, guid: 026253be9c6db694e86036b7314c3228, type: 3}
   distanceFromScreen: -0.5
-  extraOffset: {x: 0, y: 0.1, z: 0}
+  extraOffset: {x: 1.2, y: -2, z: 0}
 --- !u!1 &1996891791
 GameObject:
   m_ObjectHideFlags: 0
