@@ -16,6 +16,7 @@ public class BaekjaHandler : MonoBehaviour
 
     [Header("Fused Baekja Settings")]
     [SerializeField] private GameObject fusedBaekjaPrefab;
+    [SerializeField] private GameObject mergeEffectPrefab;
     
     //[SerializeField] private float spawnYThreshold = 1.5f;
     [SerializeField] private float fadeDuration = 2f;    // 페이드 인/아웃 지속 시간
@@ -172,6 +173,31 @@ public class BaekjaHandler : MonoBehaviour
             spawnPos,
             fusedBaekjaPrefab.transform.rotation
         );
+
+        if (mergeEffectPrefab != null)
+        {
+            GameObject effect = Instantiate(
+                mergeEffectPrefab,
+                spawnPos,
+                Quaternion.identity
+            );
+
+            // 파티클이면 수명 이후 자동 삭제 (선택)
+            var ps = effect.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                Destroy(effect, ps.main.duration + ps.main.startLifetime.constantMax);
+            }
+            else
+            {
+                // 일반 프리팹이면 적당한 시간 뒤 제거
+                Destroy(effect, 3f);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[BaekjaHandler] mergeEffectPrefab is not assigned.");
+        }
 
         if (SoundManager.Instance == null)
         {
