@@ -88,7 +88,7 @@ public class DecalManager : MonoBehaviour
         // 활성화 및 페이드 시작
         grassGroup.SetActive(true);
         //Grass Grow 사운드 재생
-        SoundManager.Instance.PlaySFX3DLoop(SoundID.GrassGrow, grassGroup.transform.position);
+        SoundManager.Instance.PlaySFX3DLoop(SoundID.GrassGrow,grassGroup.transform);
 
         Debug.Log("[DecalManager] Grass grassGroup activated & fade started.");
     }
