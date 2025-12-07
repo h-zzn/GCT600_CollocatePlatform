@@ -695,8 +695,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   labelText: {fileID: 2790731370104405949}
+  actionButton: {fileID: 5414770638136056780}
   maxWaitTime: 3
   checkInterval: 0.2
+  tigerCanvasPrefab: {fileID: 3466759972982377773, guid: d7d7afedc1ce2814d99dd27443431635, type: 3}
+  personCanvasPrefab: {fileID: 7905841129168410169, guid: f3f3d95ae82d1364686e75206aca0920, type: 3}
+  flowerCanvasPrefab: {fileID: 5989999006476864673, guid: a78954097fb3d43439df0a49e58bb273, type: 3}
+  canvasDistance: 0.8
+  canvasOffset: {x: 0, y: 0, z: 0}
+  canvasDistanceRight: 3.5
+  canvasDistanceFront: 0.3
+  canvasScale: {x: 0.0008, y: 0.0008, z: 0.0008}
 --- !u!114 &2322350176781144760
 MonoBehaviour:
   m_ObjectHideFlags: 0
