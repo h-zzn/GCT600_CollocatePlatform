@@ -9,25 +9,20 @@ public class ScreenLabelDisplay : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI labelText;
-    [SerializeField] private Button actionButton; // 버튼 참조
+    [SerializeField] private GameObject buttonObject; // Button GameObject 참조 (onClick 대신 Collider용)
 
     [Header("Settings")]
     [SerializeField] private float maxWaitTime = 3f;
     [SerializeField] private float checkInterval = 0.2f;
 
     [Header("Content Canvas Prefabs")]
-    [SerializeField] private GameObject tigerCanvasPrefab;   // Tiger용 Canvas
-    [SerializeField] private GameObject personCanvasPrefab;  // Person용 Canvas
-    [SerializeField] private GameObject flowerCanvasPrefab;  // Flower용 Canvas
+    [SerializeField] private GameObject tigerCanvasPrefab;
+    [SerializeField] private GameObject personCanvasPrefab;
+    [SerializeField] private GameObject flowerCanvasPrefab;
 
     [Header("Canvas Spawn Settings")]
-    [SerializeField] private float canvasDistance = 0.8f; // 스크린으로부터의 거리
-    //[SerializeField] private Vector3 canvasOffset = Vector3.zero;
-
-    [Header("Canvas Spawn Settings")]
-    [SerializeField] private float canvasDistanceRight = 0.5f; // 오른쪽으로 얼마나 떨어뜨릴지
-    [SerializeField] private float canvasDistanceFront = 0.3f; // 앞으로 얼마나 띄울지
-    //[SerializeField] private Vector3 canvasScale = new Vector3(0.0008f, 0.0008f, 0.0008f); // Canvas 크기
+    [SerializeField] private float canvasDistanceRight = 0.5f;
+    [SerializeField] private float canvasDistanceFront = 0.3f;
 
     // ScreenID → Label 매핑
     private Dictionary<string, string> screenLabelMap = new Dictionary<string, string>()
@@ -41,11 +36,10 @@ public class ScreenLabelDisplay : MonoBehaviour
     private Dictionary<string, GameObject> screenCanvasMap;
 
     private MRUKAnchor assignedScreen;
-    private GameObject currentActiveCanvas; // 현재 활성화된 Canvas 인스턴스
+    private GameObject currentActiveCanvas;
 
     private void Awake()
     {
-        // Canvas 매핑 초기화
         screenCanvasMap = new Dictionary<string, GameObject>()
         {
             { "SCREEN_Tiger", tigerCanvasPrefab },
@@ -57,30 +51,56 @@ public class ScreenLabelDisplay : MonoBehaviour
     public void Initialize(MRUKAnchor screenAnchor)
     {
         assignedScreen = screenAnchor;
-        SetupButton();
+        SetupButtonTrigger();
         StartCoroutine(WaitForScreenID());
     }
 
-    private void SetupButton()
+    private void SetupButtonTrigger()
     {
-        // Button을 자동으로 찾거나 Inspector에서 할당
-        if (actionButton == null)
+        // Button GameObject 자동으로 찾기
+        if (buttonObject == null)
         {
-            actionButton = GetComponentInChildren<Button>();
+            var button = GetComponentInChildren<Button>();
+            if (button != null)
+            {
+                buttonObject = button.gameObject;
+            }
         }
 
-        if (actionButton != null)
+        if (buttonObject != null)
         {
-            actionButton.onClick.AddListener(OnButtonClick);
-            Debug.Log("[ScreenLabelDisplay] Button listener added");
+            // ButtonHandTrigger 컴포넌트 추가 (없으면)
+            if (buttonObject.GetComponent<ButtonHandTrigger>() == null)
+            {
+                buttonObject.AddComponent<ButtonHandTrigger>();
+            }
+
+            // BoxCollider 추가 (없으면)
+            if (buttonObject.GetComponent<BoxCollider>() == null)
+            {
+                BoxCollider collider = buttonObject.AddComponent<BoxCollider>();
+                collider.isTrigger = true;
+                
+                // RectTransform 크기에 맞춰 Collider 크기 조정
+                RectTransform rect = buttonObject.GetComponent<RectTransform>();
+                if (rect != null)
+                {
+                    collider.size = new Vector3(rect.rect.width, rect.rect.height, 10f);
+                }
+                
+                Debug.Log("[ScreenLabelDisplay] BoxCollider added to button");
+            }
+
+            Debug.Log("[ScreenLabelDisplay] Button trigger setup complete");
         }
         else
         {
-            Debug.LogWarning("[ScreenLabelDisplay] Button not found!");
+            Debug.LogWarning("[ScreenLabelDisplay] Button object not found!");
         }
     }
 
-    private void OnButtonClick()
+    // ★ ButtonHandTrigger에서 호출할 Public 메서드
+    public void OnButtonTriggered()
     {
         var identifier = assignedScreen.GetComponentInChildren<ScreenIdentifier>(true);
         if (identifier != null && !string.IsNullOrEmpty(identifier.screenID))
@@ -89,7 +109,7 @@ public class ScreenLabelDisplay : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[ScreenLabelDisplay] ScreenID not available on button click");
+            Debug.LogWarning("[ScreenLabelDisplay] ScreenID not available on button trigger");
         }
     }
 
@@ -120,11 +140,8 @@ public class ScreenLabelDisplay : MonoBehaviour
                 
                 currentActiveCanvas.transform.position = spawnPosition;
                 
-                // ★ Screen의 up 방향을 바라보도록 회전
+                // Screen의 up 방향을 바라보도록 회전
                 currentActiveCanvas.transform.rotation = Quaternion.LookRotation(assignedScreen.transform.up);
-                
-                // Canvas 크기 조정 (작게)
-                // currentActiveCanvas.transform.localScale = canvasScale;
                 
                 Debug.Log($"[ScreenLabelDisplay] Opened content canvas for {screenID} at {spawnPosition}");
             }
@@ -179,7 +196,6 @@ public class ScreenLabelDisplay : MonoBehaviour
             return;
         }
 
-        // 매핑된 라벨 찾기
         if (screenLabelMap.TryGetValue(screenID, out string mappedLabel))
         {
             labelText.text = mappedLabel;
@@ -187,7 +203,6 @@ public class ScreenLabelDisplay : MonoBehaviour
         }
         else
         {
-            // 매핑이 없으면 원본 ID 그대로 표시
             labelText.text = screenID;
             Debug.LogWarning($"[ScreenLabelDisplay] No mapping found for '{screenID}', using original ID");
         }
@@ -195,16 +210,9 @@ public class ScreenLabelDisplay : MonoBehaviour
 
     private void OnDestroy()
     {
-        // 정리: 활성화된 Canvas가 있으면 제거
         if (currentActiveCanvas != null)
         {
             Destroy(currentActiveCanvas);
-        }
-
-        // Button listener 제거
-        if (actionButton != null)
-        {
-            actionButton.onClick.RemoveListener(OnButtonClick);
         }
     }
 }

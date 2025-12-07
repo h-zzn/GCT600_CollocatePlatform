@@ -149,6 +149,7 @@ public class AnimatedCharacterController : MonoBehaviour
             var mover = flower.GetComponent<ButterflyMover>();
             if (mover != null)
             {
+                mover.OnLastActionFinished += TryStartDecalProjection;
                 mover.StartMoving(tableAnchor, currentScreenAnchor);
             }
 
