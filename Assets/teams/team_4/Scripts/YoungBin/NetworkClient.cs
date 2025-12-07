@@ -8,7 +8,7 @@ using System.Text;
 public class NetworkClient : MonoBehaviour
 {
     [Header("Network Settings")]
-    public string serverIp = "192.168.0.7"; //"192.168.0.18";
+    public string serverIp = "192.168.0.96"; // "192.168.0.7"; //"192.168.0.18";
     public int serverPort = 5000;
 
     private UdpClient udpClient;
