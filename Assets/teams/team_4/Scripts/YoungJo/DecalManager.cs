@@ -53,13 +53,11 @@ public class DecalManager : MonoBehaviour
         Debug.Log($"[DecalManager] StartDecal 완료 (type: {type}, tex: {(decalTex != null ? decalTex.name : "null")})");
     }
 
-    /// <summary>
-    /// 씬 안에서 테이블에 붙어 있는 GrassAutoFaderOnDecal을 1회 탐색 후 캐싱.
-    /// (테이블이 하나라고 가정)
-    /// </summary>
+    
+    
     private void ActivateGrassEffect()
     {
-        // 0) 테이블 앵커 확인
+        
         var tableAnchor = MRUKManager.Instance != null ? MRUKManager.Instance.TableAnchor : null;
         if (tableAnchor == null)
         {
@@ -67,7 +65,7 @@ public class DecalManager : MonoBehaviour
             return;
         }
 
-        // 1) 캐시가 없으면, 테이블 밑에서만 GrassPrefabFader 검색
+        
         if (_cachedGrassFader == null)
         {
             _cachedGrassFader = tableAnchor.GetComponentInChildren<GrassPrefabFader>(true);
@@ -81,14 +79,16 @@ public class DecalManager : MonoBehaviour
 
         var grassGroup = _cachedGrassFader.gameObject;
 
-        // 2) 항상 OnEnable을 다시 태우고 싶다면, 한 번 껐다 켜는 것이 가장 확실
+        
         if (grassGroup.activeSelf)
         {
             grassGroup.SetActive(false);
         }
 
-        // SetActive(true) → GrassPrefabFader.OnEnable() → FadeSequence() 실행
+        // 활성화 및 페이드 시작
         grassGroup.SetActive(true);
+        //Grass Grow 사운드 재생
+        SoundManager.Instance.PlaySFX3D(SoundID.GrassGrow, grassGroup.transform.position);
 
         Debug.Log("[DecalManager] Grass grassGroup activated & fade started.");
     }

@@ -39,8 +39,12 @@ public class LargeJeongTrigger : MonoBehaviour
 
         // 작은 정 생성
         FindObjectOfType<JeongController>()?.SpawnSmallJeong(transform.position);
-
+        
+        // 사운드 재생
+        if (SoundManager.Instance != null)
+        SoundManager.Instance.PlaySFX3D(SoundID.Jeong, transform.position);
         // 큰 정 애니메이션 재생 (Trigger 파라미터)
         animator.SetTrigger("isTouched");
+
     }
 }

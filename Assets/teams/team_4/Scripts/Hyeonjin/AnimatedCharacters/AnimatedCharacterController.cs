@@ -76,6 +76,8 @@ public class AnimatedCharacterController : MonoBehaviour
 
         currentScreenAnchor = anchor;
         currentCharacter = Instantiate(prefab);
+        //Sound
+        SoundManager.Instance.PlaySFX3D(SoundID.TigerAppear, currentCharacter.transform.position);
 
         // TABLE 앵커 가져오기
         MRUKAnchor tableAnchor = MRUKManager.Instance.TableAnchor;
@@ -123,12 +125,22 @@ public class AnimatedCharacterController : MonoBehaviour
             butterflyOffsets.butterfly3Offset,
         };
 
+        AudioSource flowerLoopSource = null;
+
         for (int i = 0; i < flowerPrefabs.Length; i++)
         {
             GameObject flower = Instantiate(flowerPrefabs[i]);
             
             // 위치 배치
             PlaceCharacterBehindScreenWithOffset(flower, offsets[i % offsets.Length]);
+
+            if (i == 0 && SoundManager.Instance != null)
+            {
+                flowerLoopSource = SoundManager.Instance.PlaySFX3DLoop(
+                    SoundID.FlowerAppear,
+                    flower.transform      // 나비 오브젝트에 AudioSource를 붙임
+                );
+            }
 
             // fade
             FadeUtility.Instance?.FadeIn(flower, fadeDuration, 1f);
@@ -171,6 +183,8 @@ public class AnimatedCharacterController : MonoBehaviour
             personOffsets.mongryongOffset
         };
 
+        AudioSource personLoopSource = null;
+
 
         for (int i = 0; i < 3; i++)
         {
@@ -179,6 +193,14 @@ public class AnimatedCharacterController : MonoBehaviour
 
             // 위치 배치 (offset 적용)
             PlaceCharacterBehindScreenWithOffset(person, offsets[i]);
+
+            if (i == 0 && SoundManager.Instance != null)
+            {
+                personLoopSource = SoundManager.Instance.PlaySFX3DLoop(
+                    SoundID.ChunhyangAppear,
+                    person.transform      // 사람 오브젝트에 AudioSource를 붙임
+                );
+            }
 
             // Fade-in
             FadeUtility.Instance?.FadeIn(person, fadeDuration, 1f);

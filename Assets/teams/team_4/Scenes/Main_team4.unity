@@ -1100,7 +1100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405ed07ae7c26a141bac0d303d0a347a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
@@ -1132,7 +1131,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 917870972
-  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -1140,8 +1138,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &56734373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1947,7 +1943,6 @@ MonoBehaviour:
   spawnOffsetValue: 2
   fadeDuration: 2
   decalManager: {fileID: 910821744}
-  floorPlaneSpawner: {fileID: 0}
   butterflyOffsets:
     butterfly1Offset: {x: 0, y: 0, z: 0}
     butterfly2Offset: {x: 1.5, y: 0, z: 0}
@@ -8237,11 +8232,23 @@ MonoBehaviour:
   sfx2DAudioSource: {fileID: 0}
   soundEntries:
   - id: 3
-    clip: {fileID: 8300000, guid: 6f34048cb43592d4684ba3d08c556c5f, type: 3}
+    clip: {fileID: 8300000, guid: bb2c3a8ed3551c34abfa0cffab81f780, type: 3}
     volume: 0.51
   - id: 6
-    clip: {fileID: 8300000, guid: 56f3e97139c22e746a111f4da1bb2d2a, type: 3}
+    clip: {fileID: 8300000, guid: dbf3f334da9ee4c449353c8d35d8fb70, type: 3}
     volume: 0.51
+  - id: 5
+    clip: {fileID: 8300000, guid: 043958ac603a5c44090ed21defb088b7, type: 3}
+    volume: 0.4
+  - id: 4
+    clip: {fileID: 8300000, guid: a28d82c4cd9a2284c8bcd59601666503, type: 3}
+    volume: 0.3
+  - id: 1
+    clip: {fileID: 8300000, guid: a10e32fb19a3a8d4386234f488762402, type: 3}
+    volume: 0.3
+  - id: 2
+    clip: {fileID: 8300000, guid: 550453e501c2f4543b9a51765d3e0be7, type: 3}
+    volume: 0.3
 --- !u!4 &597489532
 Transform:
   m_ObjectHideFlags: 0
@@ -21590,7 +21597,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 3421238567
-  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 0
   ActiveSceneSynchronization: 1
@@ -21598,8 +21604,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &1858186639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22861,7 +22865,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 673658997
-  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -22869,8 +22872,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &1920822278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22930,7 +22931,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405ed07ae7c26a141bac0d303d0a347a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
@@ -23182,7 +23182,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 2812420309
-  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -23190,8 +23189,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &1925669506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23229,7 +23226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405ed07ae7c26a141bac0d303d0a347a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1

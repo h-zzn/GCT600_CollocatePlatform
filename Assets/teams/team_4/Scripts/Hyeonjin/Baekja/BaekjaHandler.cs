@@ -173,6 +173,16 @@ public class BaekjaHandler : MonoBehaviour
             fusedBaekjaPrefab.transform.rotation
         );
 
+        if (SoundManager.Instance == null)
+        {
+            Debug.LogError("[BaekjaHandler] SoundManager.Instance is NULL. Cannot play BaekjaMerge SFX.");
+        }
+        else
+        {
+            Debug.Log("[BaekjaHandler] Trying to play SFX3D: BaekjaMerge");
+
+            SoundManager.Instance.PlaySFX(SoundID.BaekjaAppear);
+        }
         // 서서히 나타나게 하기
         FadeUtility.Instance.FadeIn(fusedBaekja, fadeDuration, 0f);
 

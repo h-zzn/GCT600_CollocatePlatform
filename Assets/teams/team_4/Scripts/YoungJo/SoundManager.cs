@@ -91,4 +91,36 @@ public class SoundManager : MonoBehaviour
         // 가장 단순한 방식: AudioSource.PlayClipAtPoint
         AudioSource.PlayClipAtPoint(entry.clip, position, entry.volume);
     }
+
+    public AudioSource PlaySFX3DLoop(SoundID id, Transform attachTo)
+    {
+        if (!soundTable.TryGetValue(id, out var entry) || entry.clip == null)
+        {
+            Debug.LogWarning($"[SoundManager] 등록되지 않은 SoundID: {id}");
+            return null;
+        }
+
+        if (attachTo == null)
+        {
+            Debug.LogWarning("[SoundManager] PlaySFX3DLoop: attachTo == null");
+            return null;
+        }
+
+        // attachTo GameObject에 AudioSource 동적으로 붙임
+        var src = attachTo.gameObject.AddComponent<AudioSource>();
+        src.clip = entry.clip;
+        src.volume = entry.volume;
+        src.loop = true;
+        src.playOnAwake = false;
+
+        // 3D 설정
+        src.spatialBlend = 1f;          // 3D
+        src.rolloffMode = AudioRolloffMode.Linear;
+        src.minDistance = 1f;
+        src.maxDistance = 10f;
+
+        src.Play();
+
+        return src; // 필요하면 나중에 Stop용으로 참조할 수도 있음
+    }
 }
