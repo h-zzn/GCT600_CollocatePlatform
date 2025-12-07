@@ -59,32 +59,38 @@ public class DecalManager : MonoBehaviour
     /// </summary>
     private void ActivateGrassEffect()
     {
-        // 이미 찾은 적 있으면 그대로 사용
+        // 0) 테이블 앵커 확인
+        var tableAnchor = MRUKManager.Instance != null ? MRUKManager.Instance.TableAnchor : null;
+        if (tableAnchor == null)
+        {
+            Debug.LogWarning("[DecalManager] ActivateGrassEffect: TableAnchor is null.");
+            return;
+        }
+
+        // 1) 캐시가 없으면, 테이블 밑에서만 GrassPrefabFader 검색
         if (_cachedGrassFader == null)
         {
-            // 씬 전체에서 GrassPrefabFader 한 번 검색 (비활성 자식 포함)
-            _cachedGrassFader = FindObjectOfType<GrassPrefabFader>(true);
+            _cachedGrassFader = tableAnchor.GetComponentInChildren<GrassPrefabFader>(true);
 
             if (_cachedGrassFader == null)
             {
-                Debug.LogWarning("DecalManager: GrassPrefabFader not found in scene.");
+                Debug.LogWarning("[DecalManager] GrassPrefabFader not found under TableAnchor.");
                 return;
             }
         }
 
-        GameObject grassGroup = _cachedGrassFader.gameObject;
+        var grassGroup = _cachedGrassFader.gameObject;
 
-        if (!grassGroup.activeSelf)
+        // 2) 항상 OnEnable을 다시 태우고 싶다면, 한 번 껐다 켜는 것이 가장 확실
+        if (grassGroup.activeSelf)
         {
-            // prefab에서 inactive였던 GrassGroup을 활성화
-            // → OnEnable() → FadeSequence() 자동 실행
-            grassGroup.SetActive(true);
+            grassGroup.SetActive(false);
         }
-        else
-        {
-            // 이미 한 번 켜진 상태에서 다시 효과 재생하고 싶으면,
-            // _cachedGrassFader.RestartFade(); 같은 메서드를 추가해서 호출
-        }
+
+        // SetActive(true) → GrassPrefabFader.OnEnable() → FadeSequence() 실행
+        grassGroup.SetActive(true);
+
+        Debug.Log("[DecalManager] Grass grassGroup activated & fade started.");
     }
     private Texture2D GetTextureByType(DecalType type)
     {
