@@ -664,7 +664,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &8098676903915452379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -702,10 +702,8 @@ MonoBehaviour:
   personCanvasPrefab: {fileID: 7905841129168410169, guid: f3f3d95ae82d1364686e75206aca0920, type: 3}
   flowerCanvasPrefab: {fileID: 5989999006476864673, guid: a78954097fb3d43439df0a49e58bb273, type: 3}
   canvasDistance: 0.8
-  canvasOffset: {x: 0, y: -0.36, z: 0}
   canvasDistanceRight: 3
   canvasDistanceFront: 0.3
-  canvasScale: {x: 0.0008, y: 0.0008, z: 0.0008}
 --- !u!114 &2322350176781144760
 MonoBehaviour:
   m_ObjectHideFlags: 0

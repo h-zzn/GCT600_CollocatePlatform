@@ -10388,6 +10388,57 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 881434174}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &883147251
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 883147253}
+  - component: {fileID: 883147252}
+  m_Layer: 0
+  m_Name: TextSpanwer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &883147252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883147251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db366ff95645eda41be35020b34d7734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstPrefab: {fileID: 7599420860899084944, guid: ec3378f1d74e8d740ba69aeeb8c32004, type: 3}
+  secondPrefab: {fileID: 6312022641718344737, guid: b9fc54e98067277439a154e00aef76a0, type: 3}
+  thirdPrefab: {fileID: 5127737381195515311, guid: 28748bd970eece049a89c38ce158c953, type: 3}
+  firstDuration: 10
+  secondDuration: 10
+  spawnOffset: {x: 0, y: 1, z: 0}
+  spawnScale: {x: 0.2, y: 0.2, z: 0.2}
+--- !u!4 &883147253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883147251}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &884829294
 GameObject:
   m_ObjectHideFlags: 0
@@ -23592,3 +23643,4 @@ SceneRoots:
   - {fileID: 1875251364}
   - {fileID: 1347426888}
   - {fileID: 543786528}
+  - {fileID: 883147253}
