@@ -70,7 +70,7 @@ public class GrassPrefabFader : MonoBehaviour
 
             // 2) 알파 0 → 1 페이드
             yield return StartCoroutine(FadeInGroup(group));
-            soundManager.Instance.PlaySound("GrassGrow");
+            SoundManager.Instance.PlaySFX(SoundID.GrassGrow);
 
             // 3) 다음 그룹까지 딜레이
             if (i < _grassRendererGroups.Count - 1 && delayBetween > 0f)
