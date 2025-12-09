@@ -181,6 +181,22 @@ public class BaekjaHandler : MonoBehaviour
                 spawnPos,
                 Quaternion.identity
             );
+            // 영빈 추가
+            if (Camera.main != null)
+            {
+                // 카메라의 위치를 가져오되, 높이(y)는 이펙트의 높이로 고정
+                Vector3 targetPostition = new Vector3(
+                    Camera.main.transform.position.x, 
+                    effect.transform.position.y, 
+                    Camera.main.transform.position.z
+                );
+                
+                effect.transform.LookAt(targetPostition);
+                
+                // 만약 이펙트가 거꾸로(등지고) 나온다면 아래 주석을 해제하세요.
+                effect.transform.Rotate(0, 90, 0);
+            }
+            // 영빈 추가 끝
 
             // 파티클이면 수명 이후 자동 삭제 (선택)
             var ps = effect.GetComponent<ParticleSystem>();

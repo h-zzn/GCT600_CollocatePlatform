@@ -652,7 +652,7 @@ MonoBehaviour:
   hoveringDuration: 3
   circleRadius: 0.8
   circleSpeed: 50
-  circleHeight: 1.5
+  circleHeight: 1
   fadeDuration: 1
 --- !u!1 &138564
 GameObject:

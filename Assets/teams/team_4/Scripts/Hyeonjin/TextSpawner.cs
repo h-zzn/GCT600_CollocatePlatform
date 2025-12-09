@@ -59,6 +59,21 @@ public class TextSpawner : MonoBehaviour
             currentInstance.transform.position = spawnPosition;
             currentInstance.transform.localScale = spawnScale;
 
+            //영빈 추가(ui 방향 관련)
+            if (Camera.main != null)
+            {
+                Vector3 targetPos = new Vector3(Camera.main.transform.position.x, 
+                                              currentInstance.transform.position.y, 
+                                              Camera.main.transform.position.z);
+                currentInstance.transform.LookAt(targetPos);
+                currentInstance.transform.Rotate(0, 180, 0); // 필요 시 반전
+                
+            }
+            else
+            {
+                Debug.LogWarning("[TableSequenceSpawner] Main Camera not found for LookAt.");
+            }
+            //영빈 추가 끝
             yield return new WaitForSeconds(firstDuration);
 
             Destroy(currentInstance);
@@ -76,6 +91,21 @@ public class TextSpawner : MonoBehaviour
             currentInstance = Instantiate(secondPrefab); // rotation 파라미터 제거
             currentInstance.transform.position = spawnPosition;
             currentInstance.transform.localScale = spawnScale;
+                        //영빈 추가(ui 방향 관련)
+            if (Camera.main != null)
+            {
+                Vector3 targetPos = new Vector3(Camera.main.transform.position.x, 
+                                              currentInstance.transform.position.y, 
+                                              Camera.main.transform.position.z);
+                currentInstance.transform.LookAt(targetPos);
+                currentInstance.transform.Rotate(0, 180, 0); // 필요 시 반전
+                
+            }
+            else
+            {
+                Debug.LogWarning("[TableSequenceSpawner] Main Camera not found for LookAt.");
+            }
+            //영빈 추가 끝
 
             yield return new WaitForSeconds(secondDuration);
 
@@ -94,6 +124,21 @@ public class TextSpawner : MonoBehaviour
             currentInstance = Instantiate(thirdPrefab); // rotation 파라미터 제거
             currentInstance.transform.position = spawnPosition;
             currentInstance.transform.localScale = spawnScale;
+                        //영빈 추가(ui 방향 관련)
+            if (Camera.main != null)
+            {
+                Vector3 targetPos = new Vector3(Camera.main.transform.position.x, 
+                                              currentInstance.transform.position.y, 
+                                              Camera.main.transform.position.z);
+                currentInstance.transform.LookAt(targetPos);
+                currentInstance.transform.Rotate(0, 180, 0); // 필요 시 반전
+                
+            }
+            else
+            {
+                Debug.LogWarning("[TableSequenceSpawner] Main Camera not found for LookAt.");
+            }
+            //영빈 추가 끝
         }
         else
         {

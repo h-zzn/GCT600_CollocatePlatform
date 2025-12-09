@@ -6397,7 +6397,7 @@ MonoBehaviour:
   targetPoint: {fileID: 0}
   firstWalkDistance: -6
   moveSpeed: 1
-  stopDistance: 0.5
+  stopDistance: 0.8
   fadeDuration: 1
   rotationSpeed: 3
   finalWalkDuration: 1
